@@ -1,4 +1,4 @@
-package uk.gov.justice.digital.hmpps.templatepackagename.service
+package uk.gov.justice.digital.hmpps.mailboxregisterapi.service
 
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient

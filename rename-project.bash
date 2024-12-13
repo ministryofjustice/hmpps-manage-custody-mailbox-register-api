@@ -49,21 +49,21 @@ echo "Performing search and replace"
 EXCLUDES="( -path ./build -o -path ./out -o -path ./.git -o -path ./.gradle -o -path ./gradle -o -path ./.idea -o -path ./rename-project.bash )"
 # shellcheck disable=SC2086
 find . $EXCLUDES -prune -o -type f -exec sed -i \
-  -e "s/hmpps-template-kotlin/$PROJECT_NAME/g" \
-  -e "s/template-kotlin/$PROJECT_NAME_WITHOUT_HMPPS/g" \
+  -e "s/hmpps-mailbox-register-api/$PROJECT_NAME/g" \
+  -e "s/mailbox-register-api/$PROJECT_NAME_WITHOUT_HMPPS/g" \
   -e "s/HMPPS Template Kotlin/$PROJECT_DESCRIPTION/g" \
-  -e "s/HmppsTemplateKotlin/$CLASS_NAME/g" \
-  -e "s/templatepackagename/$PACKAGE_NAME/g" {} \;
+  -e "s/Mailboxregisterapi/$CLASS_NAME/g" \
+  -e "s/mailboxregisterapi/$PACKAGE_NAME/g" {} \;
 
 echo "Performing directory renames"
 
 # move package directory to new name
 BASE="kotlin/uk/gov/justice/digital/hmpps"
-mv "src/test/${BASE}/templatepackagename" "src/test/$BASE/$PACKAGE_NAME"
-mv "src/main/${BASE}/templatepackagename" "src/main/$BASE/$PACKAGE_NAME"
+mv "src/test/${BASE}/mailboxregisterapi" "src/test/$BASE/$PACKAGE_NAME"
+mv "src/main/${BASE}/mailboxregisterapi" "src/main/$BASE/$PACKAGE_NAME"
 
 # and move helm stuff to new name
-mv "helm_deploy/hmpps-template-kotlin" "helm_deploy/$PROJECT_NAME"
+mv "helm_deploy/hmpps-mailbox-register-api" "helm_deploy/$PROJECT_NAME"
 
 # Update helm values.yaml with product ID.
 sed -i -z -E \
@@ -79,8 +79,8 @@ sed -i -z -E \
   -e "s/PROD_ALERTS_SEVERITY_LABEL/$PROD_ALERTS_SEVERITY_LABEL/" helm_deploy/values-prod.yaml
 
 # rename kotlin files
-mv "src/main/$BASE/$PACKAGE_NAME/HmppsTemplateKotlin.kt" "src/main/$BASE/$PACKAGE_NAME/$CLASS_NAME.kt"
-mv "src/main/$BASE/$PACKAGE_NAME/config/HmppsTemplateKotlinExceptionHandler.kt" "src/main/$BASE/$PACKAGE_NAME/config/${CLASS_NAME}ExceptionHandler.kt"
+mv "src/main/$BASE/$PACKAGE_NAME/Mailboxregisterapi.kt" "src/main/$BASE/$PACKAGE_NAME/$CLASS_NAME.kt"
+mv "src/main/$BASE/$PACKAGE_NAME/config/MailboxregisterapiExceptionHandler.kt" "src/main/$BASE/$PACKAGE_NAME/config/${CLASS_NAME}ExceptionHandler.kt"
 
 
 echo "NEEDS TO BE SET MANUALLY"
