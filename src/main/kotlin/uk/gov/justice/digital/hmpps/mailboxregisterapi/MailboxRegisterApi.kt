@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class Mailboxregisterapi
+class MailboxRegisterApi
 
 fun main(args: Array<String>) {
-  runApplication<Mailboxregisterapi>(*args)
+  runApplication<MailboxRegisterApi>(*args)
 }
