@@ -8,5 +8,5 @@ jobs:
     name: Project security veracode policy scan
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/security_veracode_policy_scan.yml@v2 # WORKFLOW_VERSION
     with:
-      channel_id: the_elephants_devs
+      channel_id: moic-alerts
     secrets: inherit
