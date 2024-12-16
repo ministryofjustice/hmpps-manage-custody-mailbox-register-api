@@ -2,19 +2,20 @@
 # Per environment values which override defaults in hmpps-mailbox-register-api/values.yaml
 
 generic-service:
-  replicaCount: 2
-
   ingress:
     host: mailbox-register-api-dev.hmpps.service.justice.gov.uk
 
   env:
     APPLICATIONINSIGHTS_CONFIGURATION_FILE: "applicationinsights.dev.json"
     HMPPS_AUTH_URL: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth"
-    # Template kotlin calls out to itself to provide an example of a service call
-    # TODO: This should be replaced by a call to a different service, or removed
-    EXAMPLE_API_URL: "https://mailbox-register-api-dev.hmpps.service.justice.gov.uk"
+    HMPPS_AUTH_TOKEN_URL: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth/oauth/token"
 
 # CloudPlatform AlertManager receiver to route prometheus alerts to slack
 # See https://user-guide.cloud-platform.service.justice.gov.uk/documentation/monitoring-an-app/how-to-create-alarms.html#creating-your-own-custom-alerts
 generic-prometheus-alerts:
-  alertSeverity: moic
+  businessHoursOnly: true
+  rdsAlertsDatabases:
+    cloud-platform-0fe9a888cb3b2b30: dev
+  elastiCacheAlertsClusterIds:
+    cp-fca2365a3ac6ac86-001: dev cluster node 1
+    cp-fca2365a3ac6ac86-002: dev cluster node 2
