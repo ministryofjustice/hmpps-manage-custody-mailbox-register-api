@@ -6,7 +6,7 @@
 
 generic-service:
   nameOverride: hmpps-mailbox-register-api
-  productId: DPS087 # TODO: Update with correct product ID
+  # productId: DPS087 # TODO: Update with correct product ID
 
   replicaCount: 2
 
