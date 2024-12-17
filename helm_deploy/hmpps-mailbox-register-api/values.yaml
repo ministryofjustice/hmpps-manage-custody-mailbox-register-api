@@ -1,18 +1,38 @@
+---
+# Default values.
+# Declare variables to be passed into your templates.
+#
+# Variables in `helm_deploy/values-[env].yaml` will take precedence.
+
 generic-service:
   nameOverride: hmpps-mailbox-register-api
-  productId: "DPS087" # productId for the product that this belongs too, i.e. DPS001, see README.md for details
+  # productId: DPS087 # TODO: Update with correct product ID
 
-  replicaCount: 4
+  replicaCount: 2
 
   image:
     repository: ghcr.io/ministryofjustice/hmpps-mailbox-register-api
-    tag: app_version # override at deployment time
+    tag: app_version # overridden at deployment time
     port: 8080
 
   ingress:
     enabled: true
-    host: app-hostname.local # override per environment
     tlsSecretName: hmpps-mailbox-register-api-cert
+
+  # https://github.com/ministryofjustice/hmpps-ip-allowlists/blob/main/ip-allowlist-groups.yaml
+  allowlist:
+    groups:
+      - digital_staff_and_mojo
+      - moj_cloud_platform
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 50%
+
+  podSecurityContext:
+    fsGroup: 2000
 
   # Environment variables to load into the deployment
   env:
@@ -24,18 +44,15 @@ generic-service:
   # namespace_secrets:
   #   [name of kubernetes secret]:
   #     [name of environment variable as seen by app]: [key of kubernetes secret to load]
-
   namespace_secrets:
-    hmpps-mailbox-register-api:
-      # Example client registration secrets
-      EXAMPLE_API_CLIENT_ID: "TEMPLATE_KOTLIN_API_CLIENT_ID"
-      EXAMPLE_API_CLIENT_SECRET: "TEMPLATE_KOTLIN_API_CLIENT_SECRET"
     application-insights:
       APPLICATIONINSIGHTS_CONNECTION_STRING: "APPLICATIONINSIGHTS_CONNECTION_STRING"
-
-  allowlist:
-    groups:
-      - internal
+    rds-instance-output:
+      DB_NAME: "database_name"
+      DB_PASS: "database_password"
+      DB_USER: "database_username"
+      DB_SERVER: "rds_instance_address"
 
 generic-prometheus-alerts:
   targetApplication: hmpps-mailbox-register-api
+  alertSeverity: moic
