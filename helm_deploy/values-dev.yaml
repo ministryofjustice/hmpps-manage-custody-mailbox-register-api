@@ -18,6 +18,3 @@ generic-prometheus-alerts:
   businessHoursOnly: true
   rdsAlertsDatabases:
     cloud-platform-0fe9a888cb3b2b30: dev
-  elastiCacheAlertsClusterIds:
-    cp-fca2365a3ac6ac86-001: dev cluster node 1
-    cp-fca2365a3ac6ac86-002: dev cluster node 2
