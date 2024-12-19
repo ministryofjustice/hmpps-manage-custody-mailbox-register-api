@@ -52,6 +52,9 @@ generic-service:
       DB_PASS: "database_password"
       DB_USER: "database_username"
       DB_SERVER: "rds_instance_address"
+    hmpps-auth:
+      CLIENT_CREDS_CLIENT_ID: 'CLIENT_CREDS_CLIENT_ID'
+      CLIENT_CREDS_CLIENT_SECRET: 'CLIENT_CREDS_CLIENT_SECRET'
     hmpps-mailbox-register-api:
       # Example client registration secrets
       EXAMPLE_API_CLIENT_ID: "TEMPLATE_KOTLIN_API_CLIENT_ID"
