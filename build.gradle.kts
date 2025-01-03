@@ -11,6 +11,7 @@ dependencies {
   implementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter:1.1.0")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
+  implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
   runtimeOnly("org.postgresql:postgresql:42.7.3")
 
