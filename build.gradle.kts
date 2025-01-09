@@ -17,6 +17,7 @@ dependencies {
   runtimeOnly("org.postgresql:postgresql:42.7.3")
 
   testImplementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter-test:1.1.0")
+  testImplementation("com.h2database:h2")
   testImplementation("org.wiremock:wiremock-standalone:3.9.2")
   testImplementation("io.swagger.parser.v3:swagger-parser:2.1.24") {
     exclude(group = "io.swagger.core.v3")
