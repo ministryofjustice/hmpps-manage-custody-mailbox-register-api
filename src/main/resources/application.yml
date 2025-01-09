@@ -31,10 +31,10 @@ spring:
 
   flyway:
     enabled: true
-    locations: classpath:/migration/postgresql
+    locations: classpath:/migration/postgresql,/migration/common
     url: ${spring.datasource.url}
-    user: ${DB_USER}
-    password: ${DB_PASS}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
 
 
   # TODO: This security section can be removed if your service doesn't call out to other services

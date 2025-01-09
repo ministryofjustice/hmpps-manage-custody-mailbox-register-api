@@ -21,9 +21,3 @@ spring:
     url: 'jdbc:h2:mem:hmpps-mailbox-register-test;MODE=PostgreSQL;DB_CLOSE_DELAY=-1'
     username: mailbox-register
     password: dummy-password
-
-  flyway:
-    locations: classpath:/migration/common
-    url: ${spring.datasource.url}
-    user: mailbox-register
-    password: dummy-password
