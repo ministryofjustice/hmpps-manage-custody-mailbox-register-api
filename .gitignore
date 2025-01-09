@@ -71,3 +71,6 @@ sonar-project.properties
 
 #Helm
 **/Chart.lock
+
+# OSX random files
+.DS_Store
