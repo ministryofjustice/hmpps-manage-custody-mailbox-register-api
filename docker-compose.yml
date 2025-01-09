@@ -13,9 +13,13 @@ services:
     environment:
       - SERVER_PORT=8080
       - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
-      # TODO: Remove this URL and replace with outgoing service URLs
-      - EXAMPLE_URL=http://hmpps-mailbox-register-api:8080
       - SPRING_PROFILES_ACTIVE=dev
+      - DB_SERVER=mailbox-register-db
+      - DB_NAME=mailbox-register-db
+      - DB_USER=mailbox-register
+      - DB_PASS=dummy-password
+    depends_on:
+      - mailbox-register-db
 
   hmpps-auth:
     image: quay.io/hmpps/hmpps-auth:latest
@@ -31,5 +35,28 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
       - APPLICATION_AUTHENTICATION_UI_ALLOWLIST=0.0.0.0/0
 
+  mailbox-register-db:
+    image: postgres:16.4
+    networks:
+      - hmpps
+    container_name: mailbox-register-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=mailbox-register-db
+      - POSTGRES_USER=mailbox-register
+      - POSTGRES_PASSWORD=dummy-password
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d mailbox-register-db -U mailbox-register" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
 networks:
   hmpps:
+
+volumes:
+  pgdata:
