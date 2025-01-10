@@ -1,6 +1,10 @@
 package uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes
 
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.ColumnDefault
 import java.time.OffsetDateTime
@@ -31,5 +35,5 @@ class LocalDeliveryUnitMailbox(
   var createdAt: OffsetDateTime? = null,
 
   @ColumnDefault("CURRENT_TIMESTAMP")
-  var updatedAt: OffsetDateTime? = null
+  var updatedAt: OffsetDateTime? = null,
 )

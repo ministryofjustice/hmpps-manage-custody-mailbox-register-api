@@ -25,7 +25,7 @@ class CreatingMailboxesTest {
         areaCode = "AREA_CODE",
         name = "Mailbox Name",
         emailAddress = "ldu@example.com",
-        country = "England"
+        country = "England",
       )
 
       webTestClient.post()

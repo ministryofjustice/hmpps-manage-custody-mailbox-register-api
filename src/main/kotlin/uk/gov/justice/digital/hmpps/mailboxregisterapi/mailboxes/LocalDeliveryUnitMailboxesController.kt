@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 @PreAuthorize("hasRole('ROLE_TEMPLATE_KOTLIN__UI')")
 @RequestMapping(value = ["/local-delivery-unit-mailboxes"], produces = ["application/json"])
 class LocalDeliveryUnitMailboxesController(
-  private val localDeliveryUnitMailboxRepository: LocalDeliveryUnitMailboxRepository
+  private val localDeliveryUnitMailboxRepository: LocalDeliveryUnitMailboxRepository,
 ) {
   @PostMapping(value = [""])
   fun create(@RequestBody newMailbox: LocalDeliveryUnitMailbox) {
