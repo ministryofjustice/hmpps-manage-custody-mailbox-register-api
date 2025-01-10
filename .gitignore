@@ -8,6 +8,9 @@
 .kotlin/
 build/
 
+.env.dev
+.env.test
+
 # CMake
 cmake-build-debug/
 
