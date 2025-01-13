@@ -1,6 +1,9 @@
 info.app:
-  name: HMPPS Template Kotlin
+  name: HMPPS Mailbox Register
   version: 1.0
+  team:
+    name: HMPPS Elephants Team
+    email: elephants@digital.justice.gov.uk
 
 spring:
   application:
@@ -55,14 +58,6 @@ spring:
             client-id: ${client.creds.client.id}
             client-secret: ${client.creds.client.secret}
             authorization-grant-type: client_credentials
-          # example client registration for calling out to other services
-          # TODO: Remove / replace this registration
-          example-api:
-            provider: hmpps-auth
-            client-id: ${example-api.client.id}
-            client-secret: ${example-api.client.secret}
-            authorization-grant-type: client_credentials
-            scope: read
 
 server:
   port: 8080

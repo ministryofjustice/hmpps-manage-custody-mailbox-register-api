@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import jakarta.validation.constraints.Email
+import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.ColumnDefault
 import java.time.OffsetDateTime
@@ -18,14 +20,14 @@ class LocalDeliveryUnitMailbox(
   @ColumnDefault("gen_random_uuid()")
   var id: UUID? = null,
 
-  @NotNull
-  var unitCode: String = "",
+  @field:NotBlank @field:NotNull
+  var unitCode: String? = "",
 
-  @NotNull
-  var areaCode: String = "",
+  @field:NotBlank @field:NotNull
+  var areaCode: String? = "",
 
-  @NotNull
-  var emailAddress: String = "",
+  @field:Email @field:NotBlank @field:NotNull
+  var emailAddress: String? = "",
 
   var country: String? = null,
 

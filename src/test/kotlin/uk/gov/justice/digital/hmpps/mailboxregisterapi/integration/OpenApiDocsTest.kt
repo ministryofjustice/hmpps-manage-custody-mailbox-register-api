@@ -70,7 +70,15 @@ class OpenApiDocsTest : IntegrationTestBase() {
     // We therefore need to grab all the valid security requirements and check that each path only contains those items
     val securityRequirements = result.openAPI.security.flatMap { it.keys }
     result.openAPI.paths.forEach { pathItem ->
-      assertThat(pathItem.value.get.security.flatMap { it.keys }).isSubsetOf(securityRequirements)
+      if (pathItem.value.get != null) {
+        assertThat(pathItem.value.get.security.flatMap { it.keys }).isSubsetOf(securityRequirements)
+      }
+      if (pathItem.value.post != null) {
+        assertThat(pathItem.value.post.security.flatMap { it.keys }).isSubsetOf(securityRequirements)
+      }
+      if (pathItem.value.put != null) {
+        assertThat(pathItem.value.put.security.flatMap { it.keys }).isSubsetOf(securityRequirements)
+      }
     }
   }
 
@@ -89,7 +97,12 @@ class OpenApiDocsTest : IntegrationTestBase() {
         assertThat(it).contains(role)
       }
       .jsonPath("$.components.securitySchemes.$key.bearerFormat").isEqualTo("JWT")
-      .jsonPath("$.security[0].$key").isEqualTo(JSONArray().apply { this.add("read") })
+      .jsonPath("$.security[0].$key").isEqualTo(
+        JSONArray().apply {
+          this.add("read")
+          this.add("write")
+        },
+      )
   }
 
   @Test
