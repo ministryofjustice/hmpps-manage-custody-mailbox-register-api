@@ -68,7 +68,7 @@ class CreatingMailboxesTest {
     fun `are created by submitting the correct details`() {
       webTestClient.post()
         .uri(baseUri)
-        .headers(setAuthorisation(roles = listOf("ROLE_TEMPLATE_KOTLIN__UI")))
+        .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
         .bodyValue(attributes)
         .exchange()
         .expectStatus().isCreated
@@ -93,7 +93,7 @@ class CreatingMailboxesTest {
 
       webTestClient.post()
         .uri(baseUri)
-        .headers(setAuthorisation(roles = listOf("ROLE_TEMPLATE_KOTLIN__UI")))
+        .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
         .contentType(MediaType.APPLICATION_JSON)
         .bodyValue(invalidAttributes)
         .exchange()

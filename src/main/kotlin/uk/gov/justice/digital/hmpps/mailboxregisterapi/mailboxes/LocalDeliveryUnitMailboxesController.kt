@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 
 @RestController
-@PreAuthorize("hasRole('ROLE_TEMPLATE_KOTLIN__UI')")
+@PreAuthorize("hasRole('MAILBOX_REGISTER_ADMIN')")
 @RequestMapping(value = ["/local-delivery-unit-mailboxes"], produces = ["application/json"])
 class LocalDeliveryUnitMailboxesController(
   private val localDeliveryUnitMailboxRepository: LocalDeliveryUnitMailboxRepository,
