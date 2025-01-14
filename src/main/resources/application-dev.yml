@@ -1,14 +1,8 @@
 hmpps-auth:
-  url: "http://localhost:8090/auth"
-
-# example client configuration for calling out to other services
-# TODO: Remove / replace this configuration
-example-api:
-  url: "http://localhost:8080"
-  client:
-    id: "example-api-client"
-    secret: "example-api-client-secret"
+  url: "${HMPPS_AUTH_URL:http://localhost:8090/auth}"
 
 spring:
+  config:
+    import: optional:file:.env.dev[.properties]
   datasource:
     url: 'jdbc:postgresql://${DB_SERVER}/${DB_NAME}'
