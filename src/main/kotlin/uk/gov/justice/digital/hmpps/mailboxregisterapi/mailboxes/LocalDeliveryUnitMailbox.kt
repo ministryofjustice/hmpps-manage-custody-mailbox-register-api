@@ -9,6 +9,8 @@ import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.ColumnDefault
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -33,9 +35,9 @@ class LocalDeliveryUnitMailbox(
 
   var name: String? = null,
 
-  @ColumnDefault("CURRENT_TIMESTAMP")
+  @CreationTimestamp
   var createdAt: OffsetDateTime? = null,
 
-  @ColumnDefault("CURRENT_TIMESTAMP")
+  @UpdateTimestamp
   var updatedAt: OffsetDateTime? = null,
 )
