@@ -99,6 +99,7 @@ class CreatingMailboxesTest {
         .bodyValue(invalidAttributes)
         .exchange()
         .expectStatus().isBadRequest
+        .expectBody().jsonPath("$.errors.$nullFieldName").isEqualTo("must not be blank")
 
       assertThat(localDeliveryUnitMailboxes.count()).isZero
     }
