@@ -25,4 +25,19 @@ class LocalDeliveryUnitMailboxService(
   fun listMailboxes(): List<LocalDeliveryUnitMailbox> {
     return repository.findAll(Sort.by(Sort.Direction.ASC, LocalDeliveryUnitMailbox::createdAt.name))
   }
+
+  @Transactional
+  fun updateMailbox(id: UUID, mailbox: LocalDeliveryUnitMailbox): LocalDeliveryUnitMailbox {
+    val existingMailbox = getMailboxById(id)
+
+    existingMailbox.apply {
+      unitCode = mailbox.unitCode
+      areaCode = mailbox.areaCode
+      emailAddress = mailbox.emailAddress
+      country = mailbox.country
+      name = mailbox.name
+    }
+
+    return repository.saveAndFlush(existingMailbox)
+  }
 }
