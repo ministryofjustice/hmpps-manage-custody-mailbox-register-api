@@ -16,7 +16,7 @@ import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 
 @RestControllerAdvice
 class MailboxRegisterApiExceptionHandler {
-  @ExceptionHandler(ValidationException::class, MethodArgumentNotValidException::class)
+  @ExceptionHandler(ValidationException::class)
   fun handleValidationException(e: ValidationException): ResponseEntity<ErrorResponse> = ResponseEntity
     .status(BAD_REQUEST)
     .body(
@@ -26,6 +26,17 @@ class MailboxRegisterApiExceptionHandler {
         developerMessage = e.message,
       ),
     ).also { log.info("Validation exception: {}", e.message) }
+
+  @ExceptionHandler(MethodArgumentNotValidException::class)
+  fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseEntity<Any> = ResponseEntity
+    .badRequest()
+    .body(
+      mapOf(
+        "errors" to e.bindingResult.fieldErrors.associate { it.field to it.defaultMessage },
+        "message" to "Validation failed",
+        "status" to BAD_REQUEST.value(),
+      ),
+    )
 
   @ExceptionHandler(NoResourceFoundException::class)
   fun handleNoResourceFoundException(e: NoResourceFoundException): ResponseEntity<ErrorResponse> = ResponseEntity

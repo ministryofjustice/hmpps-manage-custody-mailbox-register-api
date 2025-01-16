@@ -7,7 +7,6 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -22,13 +21,13 @@ class LocalDeliveryUnitMailbox(
   @ColumnDefault("gen_random_uuid()")
   var id: UUID? = null,
 
-  @field:NotBlank @field:NotNull
+  @field:NotBlank
   var unitCode: String? = "",
 
-  @field:NotBlank @field:NotNull
+  @field:NotBlank
   var areaCode: String? = "",
 
-  @field:Email @field:NotBlank @field:NotNull
+  @field:NotBlank @field:Email
   var emailAddress: String? = "",
 
   var country: String? = null,
