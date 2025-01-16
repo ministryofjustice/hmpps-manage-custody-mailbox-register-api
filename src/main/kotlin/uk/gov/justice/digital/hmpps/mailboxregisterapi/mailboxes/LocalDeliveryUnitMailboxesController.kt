@@ -6,22 +6,23 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
-import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
+import java.util.UUID
 
 @RestController
 @PreAuthorize("hasRole('MAILBOX_REGISTER_ADMIN')")
 @RequestMapping(value = ["/local-delivery-unit-mailboxes"], produces = ["application/json"])
 class LocalDeliveryUnitMailboxesController(
-  private val localDeliveryUnitMailboxRepository: LocalDeliveryUnitMailboxRepository,
+  private val localDeliveryUnitMailboxService: LocalDeliveryUnitMailboxService,
 ) {
   @PostMapping(value = [""])
   @ResponseStatus(code = HttpStatus.CREATED)
@@ -48,9 +49,8 @@ class LocalDeliveryUnitMailboxesController(
       ),
     ],
   )
-  fun create(@Valid @RequestBody newMailbox: LocalDeliveryUnitMailbox) {
-    localDeliveryUnitMailboxRepository.saveAndFlush(newMailbox)
-  }
+  fun create(@Valid @RequestBody newMailbox: LocalDeliveryUnitMailbox) =
+    localDeliveryUnitMailboxService.createMailbox(newMailbox)
 
   @GetMapping(value = [""])
   @ResponseStatus(code = HttpStatus.OK)
@@ -72,6 +72,32 @@ class LocalDeliveryUnitMailboxesController(
       ),
     ],
   )
-  fun list(): List<LocalDeliveryUnitMailbox> =
-    localDeliveryUnitMailboxRepository.findAll(Sort.by(Sort.Direction.ASC, "createdAt"))
+  fun list(): List<LocalDeliveryUnitMailbox> = localDeliveryUnitMailboxService.listMailboxes()
+
+  @GetMapping(value = ["/{id}"])
+  @ResponseStatus(code = HttpStatus.OK)
+  @Operation(
+    summary = "Gets a local delivery unit mailbox by ID",
+    description = "Gets a local delivery unit mailbox by ID",
+    security = [SecurityRequirement(name = "mailbox-register-api-ui-role")],
+    responses = [
+      ApiResponse(responseCode = "200", description = "The local delivery unit mailbox"),
+      ApiResponse(
+        responseCode = "401",
+        description = "Unauthorized access to this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+      ApiResponse(
+        responseCode = "403",
+        description = "Forbidden access to this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+      ApiResponse(
+        responseCode = "404",
+        description = "The local delivery unit mailbox was not found",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+    ],
+  )
+  fun getMailboxById(@PathVariable(name = "id") id: UUID) = localDeliveryUnitMailboxService.getMailboxById(id)
 }
