@@ -99,5 +99,5 @@ class LocalDeliveryUnitMailboxesController(
       ),
     ],
   )
-  fun getMailboxById(@PathVariable(name = "id") id: UUID) = localDeliveryUnitMailboxService.getMailboxById(id)
+  fun getById(@PathVariable(name = "id") id: UUID) = localDeliveryUnitMailboxService.getMailboxById(id)
 }

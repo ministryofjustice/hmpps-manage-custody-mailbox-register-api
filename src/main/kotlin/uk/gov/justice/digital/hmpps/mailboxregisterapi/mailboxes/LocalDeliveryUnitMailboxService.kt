@@ -18,8 +18,7 @@ class LocalDeliveryUnitMailboxService(
 
   @Transactional
   fun getMailboxById(id: UUID): LocalDeliveryUnitMailbox {
-    return repository.findById(id).firstOrNull()
-      ?: throw NoResourceFoundException(HttpMethod.GET, id.toString())
+    return repository.findById(id) ?: throw NoResourceFoundException(HttpMethod.GET, id.toString())
   }
 
   @Transactional

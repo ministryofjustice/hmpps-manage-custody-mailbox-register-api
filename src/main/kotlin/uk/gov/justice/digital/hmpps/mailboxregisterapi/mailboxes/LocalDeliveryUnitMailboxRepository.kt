@@ -6,5 +6,5 @@ import java.util.UUID
 
 @Repository
 interface LocalDeliveryUnitMailboxRepository : JpaRepository<LocalDeliveryUnitMailbox, String> {
-  fun findById(id: UUID): MutableList<LocalDeliveryUnitMailbox>
+  fun findById(id: UUID): LocalDeliveryUnitMailbox?
 }
