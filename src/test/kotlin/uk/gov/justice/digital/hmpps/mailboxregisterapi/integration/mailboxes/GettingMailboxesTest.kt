@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.ParameterizedTypeReference
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.LocalDeliveryUnitMailbox
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.LocalDeliveryUnitMailboxRepository
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.LocalDeliveryUnitMailboxService
 
 private const val DUMMY_MAILBOX_ID = "8d044b2e-96b1-45ef-a2ce-cce9c6f6a0c2"
 private const val BASE_URI: String = "/local-delivery-unit-mailboxes"
@@ -18,7 +18,7 @@ class GettingMailboxesTest {
   @DisplayName("GET /local-delivery-unit-mailboxes/:id")
   inner class LduMailboxes : IntegrationTestBase() {
     @Autowired
-    lateinit var localDeliveryUnitMailboxes: LocalDeliveryUnitMailboxRepository
+    lateinit var localDeliveryUnitMailboxService: LocalDeliveryUnitMailboxService
 
     @Test
     fun `should return unauthorized if no token`() {
@@ -68,7 +68,7 @@ class GettingMailboxesTest {
         emailAddress = "ldu@example.com",
         country = "England",
       )
-      val mailboxId = localDeliveryUnitMailboxes.save(newMailbox).id
+      val mailboxId = localDeliveryUnitMailboxService.createMailbox(newMailbox).id
 
       val mailbox = webTestClient.get()
         .uri("$BASE_URI/$mailboxId")
