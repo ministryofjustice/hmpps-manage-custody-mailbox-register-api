@@ -6,8 +6,10 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -49,4 +51,27 @@ class LocalDeliveryUnitMailboxesController(
   fun create(@Valid @RequestBody newMailbox: LocalDeliveryUnitMailbox) {
     localDeliveryUnitMailboxRepository.saveAndFlush(newMailbox)
   }
+
+  @GetMapping(value = [""])
+  @ResponseStatus(code = HttpStatus.OK)
+  @Operation(
+    summary = "Lists all local delivery unit mailboxes",
+    description = "Lists all local delivery unit mailboxes",
+    security = [SecurityRequirement(name = "mailbox-register-api-ui-role")],
+    responses = [
+      ApiResponse(responseCode = "200", description = "A list of local delivery unit mailboxes"),
+      ApiResponse(
+        responseCode = "401",
+        description = "Unauthorized access to this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+      ApiResponse(
+        responseCode = "403",
+        description = "Forbidden access to this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+    ],
+  )
+  fun list(): List<LocalDeliveryUnitMailbox> =
+    localDeliveryUnitMailboxRepository.findAll(Sort.by(Sort.Direction.ASC, "createdAt"))
 }

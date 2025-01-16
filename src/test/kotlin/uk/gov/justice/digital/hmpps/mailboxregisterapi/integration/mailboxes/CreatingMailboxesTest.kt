@@ -12,8 +12,9 @@ import org.springframework.http.MediaType
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.LocalDeliveryUnitMailboxRepository
 
+private const val BASE_URI: String = "/local-delivery-unit-mailboxes"
+
 class CreatingMailboxesTest {
-  private val baseUri: String = "/local-delivery-unit-mailboxes"
   private lateinit var attributes: HashMap<String, String?>
 
   @Nested
@@ -36,7 +37,7 @@ class CreatingMailboxesTest {
     @Test
     fun `should return unauthorized if no token`() {
       webTestClient.post()
-        .uri(baseUri)
+        .uri(BASE_URI)
         .exchange()
         .expectStatus()
         .isUnauthorized
@@ -45,7 +46,7 @@ class CreatingMailboxesTest {
     @Test
     fun `should return forbidden if no role`() {
       webTestClient.post()
-        .uri(baseUri)
+        .uri(BASE_URI)
         .headers(setAuthorisation())
         .bodyValue(attributes)
         .exchange()
@@ -56,7 +57,7 @@ class CreatingMailboxesTest {
     @Test
     fun `should return forbidden if wrong role`() {
       webTestClient.post()
-        .uri(baseUri)
+        .uri(BASE_URI)
         .headers(setAuthorisation(roles = listOf("ROLE_WRONG")))
         .bodyValue(attributes)
         .exchange()
@@ -67,7 +68,7 @@ class CreatingMailboxesTest {
     @Test
     fun `are created by submitting the correct details`() {
       webTestClient.post()
-        .uri(baseUri)
+        .uri(BASE_URI)
         .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
         .bodyValue(attributes)
         .exchange()
@@ -92,7 +93,7 @@ class CreatingMailboxesTest {
       }
 
       webTestClient.post()
-        .uri(baseUri)
+        .uri(BASE_URI)
         .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
         .contentType(MediaType.APPLICATION_JSON)
         .bodyValue(invalidAttributes)
