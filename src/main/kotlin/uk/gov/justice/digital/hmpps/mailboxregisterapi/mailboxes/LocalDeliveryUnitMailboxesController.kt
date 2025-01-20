@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -134,4 +135,31 @@ class LocalDeliveryUnitMailboxesController(
   )
   fun update(@PathVariable(name = "id") id: UUID, @Valid @RequestBody mailbox: LocalDeliveryUnitMailbox) =
     localDeliveryUnitMailboxService.updateMailbox(id, mailbox)
+
+  @DeleteMapping(value = ["/{id}"])
+  @ResponseStatus(code = HttpStatus.OK)
+  @Operation(
+    summary = "Deletes a local delivery unit mailbox",
+    description = "Deletes a local delivery unit mailbox",
+    security = [SecurityRequirement(name = "mailbox-register-api-ui-role")],
+    responses = [
+      ApiResponse(responseCode = "200", description = "The local delivery unit mailbox was deleted"),
+      ApiResponse(
+        responseCode = "401",
+        description = "Unauthorized access to this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+      ApiResponse(
+        responseCode = "403",
+        description = "Forbidden access to this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+      ApiResponse(
+        responseCode = "404",
+        description = "The local delivery unit mailbox was not found",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+    ],
+  )
+  fun delete(@PathVariable(name = "id") id: UUID) = localDeliveryUnitMailboxService.deleteMailbox(id)
 }

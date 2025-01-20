@@ -40,4 +40,9 @@ class LocalDeliveryUnitMailboxService(
 
     return repository.saveAndFlush(existingMailbox)
   }
+
+  @Transactional
+  fun deleteMailbox(id: UUID) {
+    repository.delete(getMailboxById(id))
+  }
 }
