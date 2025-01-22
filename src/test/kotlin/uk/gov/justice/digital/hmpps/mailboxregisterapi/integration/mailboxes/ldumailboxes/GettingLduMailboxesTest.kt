@@ -2,7 +2,6 @@ package uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.mailboxes.ld
 
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.ParameterizedTypeReference
