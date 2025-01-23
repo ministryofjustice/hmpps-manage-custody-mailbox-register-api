@@ -11,8 +11,8 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.jdbc.Sql
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.PrisonCode
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.OffenderManagementUnitMailboxRepository
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.OffenderManagementUnitRole
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitMailboxRepository
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitRole
 
 private const val BASE_URI: String = "/offender-management-unit-mailboxes"
 
