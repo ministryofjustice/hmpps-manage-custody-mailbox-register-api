@@ -8,7 +8,7 @@ class OffenderManagementUnitMailboxService(
   private val repository: OffenderManagementUnitMailboxRepository,
 ) {
   @Transactional
-  fun createMailbox(newMailbox: OffenderManagementUnitMailbox): OffenderManagementUnitMailbox {
-    return repository.saveAndFlush(newMailbox)
+  fun createMailbox(newMailbox: OffenderManagementUnitMailboxForm): OffenderManagementUnitMailbox {
+    return repository.saveAndFlush(newMailbox.asEntity())
   }
 }

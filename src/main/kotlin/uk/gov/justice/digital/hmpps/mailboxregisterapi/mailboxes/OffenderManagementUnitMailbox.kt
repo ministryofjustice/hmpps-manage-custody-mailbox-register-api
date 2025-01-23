@@ -17,11 +17,6 @@ import uk.gov.justice.digital.hmpps.mailboxregisterapi.PrisonCode
 import java.time.OffsetDateTime
 import java.util.*
 
-enum class OffenderManagementUnitRole {
-  CVL,
-  HDC,
-}
-
 @Entity
 @Table(name = "offender_management_unit_mailboxes")
 class OffenderManagementUnitMailbox(

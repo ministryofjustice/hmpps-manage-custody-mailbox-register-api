@@ -46,6 +46,6 @@ class OffenderManagementUnitMailboxesController(
       ),
     ],
   )
-  fun create(@Valid @RequestBody newMailbox: OffenderManagementUnitMailbox) =
+  fun create(@Valid @RequestBody newMailbox: OffenderManagementUnitMailboxForm) =
     offenderManagementUnitMailboxService.createMailbox(newMailbox)
 }

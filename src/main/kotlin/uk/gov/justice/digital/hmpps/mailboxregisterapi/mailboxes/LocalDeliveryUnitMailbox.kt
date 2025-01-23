@@ -11,7 +11,7 @@ import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.OffsetDateTime
-import java.util.*
+import java.util.UUID
 
 @Entity
 @Table(name = "local_delivery_unit_mailboxes")
