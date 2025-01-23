@@ -115,8 +115,8 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
     offenderManagementUnitMailboxRepository.findAll().first().apply {
       assertThat(name).isEqualTo("Mailbox Name")
       assertThat(emailAddress).isEqualTo("omu@example.com")
-      assertThat(prisonCode).isEqualTo(PrisonCode.LEI)
-      assertThat(role).isEqualTo(OffenderManagementUnitRole.CVL)
+      assertThat(prisonCode.toString()).isEqualTo("LEI")
+      assertThat(role.toString()).isEqualTo("CVL")
     }
   }
 }
