@@ -51,7 +51,7 @@ class LocalDeliveryUnitMailboxesController(
       ),
     ],
   )
-  fun create(@Valid @RequestBody newMailbox: LocalDeliveryUnitMailbox) =
+  fun create(@Valid @RequestBody newMailbox: LocalDeliveryUnitMailboxForm) =
     localDeliveryUnitMailboxService.createMailbox(newMailbox)
 
   @GetMapping(value = [""])
@@ -133,7 +133,7 @@ class LocalDeliveryUnitMailboxesController(
       ),
     ],
   )
-  fun update(@PathVariable(name = "id") id: UUID, @Valid @RequestBody mailbox: LocalDeliveryUnitMailbox) =
+  fun update(@PathVariable(name = "id") id: UUID, @Valid @RequestBody mailbox: LocalDeliveryUnitMailboxForm) =
     localDeliveryUnitMailboxService.updateMailbox(id, mailbox)
 
   @DeleteMapping(value = ["/{id}"])

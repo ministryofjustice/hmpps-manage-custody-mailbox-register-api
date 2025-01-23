@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.LocalDeliveryUnitMailbox
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.LocalDeliveryUnitMailboxForm
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.LocalDeliveryUnitMailboxService
 
 private const val DUMMY_MAILBOX_ID = "8d044b2e-96b1-45ef-a2ce-cce9c6f6a0c2"
@@ -66,7 +66,7 @@ class UpdatingLduMailboxesTest : IntegrationTestBase() {
 
   @Test
   fun `should update the mailbox by submitting the correct details`() {
-    val newMailbox = LocalDeliveryUnitMailbox(
+    val newMailbox = LocalDeliveryUnitMailboxForm(
       unitCode = "UNIT_CODE",
       areaCode = "AREA_CODE",
       name = "Mailbox Name",
@@ -101,7 +101,7 @@ class UpdatingLduMailboxesTest : IntegrationTestBase() {
       this[nullFieldName] = null
     }
 
-    val newMailbox = LocalDeliveryUnitMailbox(
+    val newMailbox = LocalDeliveryUnitMailboxForm(
       unitCode = "UNIT_CODE",
       areaCode = "AREA_CODE",
       name = "Mailbox Name",

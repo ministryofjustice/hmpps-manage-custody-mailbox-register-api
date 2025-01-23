@@ -12,8 +12,8 @@ class LocalDeliveryUnitMailboxService(
   private val repository: LocalDeliveryUnitMailboxRepository,
 ) {
   @Transactional
-  fun createMailbox(newMailbox: LocalDeliveryUnitMailbox): LocalDeliveryUnitMailbox {
-    return repository.saveAndFlush(newMailbox)
+  fun createMailbox(newMailbox: LocalDeliveryUnitMailboxForm): LocalDeliveryUnitMailbox {
+    return repository.saveAndFlush(newMailbox.asEntity())
   }
 
   @Transactional
@@ -27,7 +27,7 @@ class LocalDeliveryUnitMailboxService(
   }
 
   @Transactional
-  fun updateMailbox(id: UUID, mailbox: LocalDeliveryUnitMailbox): LocalDeliveryUnitMailbox {
+  fun updateMailbox(id: UUID, mailbox: LocalDeliveryUnitMailboxForm): LocalDeliveryUnitMailbox {
     val existingMailbox = getMailboxById(id)
 
     existingMailbox.apply {
