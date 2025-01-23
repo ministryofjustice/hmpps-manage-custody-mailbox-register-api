@@ -9,9 +9,11 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.PrisonCode
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -33,10 +35,10 @@ class OffenderManagementUnitMailbox(
 
   var name: String? = null,
 
-  @field:NotBlank
-  var prisonCode: String? = "",
+  @Enumerated(EnumType.STRING) @field:NotNull(message = "must not be blank")
+  var prisonCode: PrisonCode? = null,
 
-  @Enumerated(EnumType.STRING)
+  @Enumerated(EnumType.STRING) @field:NotNull(message = "must not be blank")
   var role: OffenderManagementUnitRole? = null,
 
   @CreationTimestamp
