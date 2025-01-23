@@ -1,4 +1,4 @@
-package uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes
+package uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.localdeliveryunits
 
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Sort

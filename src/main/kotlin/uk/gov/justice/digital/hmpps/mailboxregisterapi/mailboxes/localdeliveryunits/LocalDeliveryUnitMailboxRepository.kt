@@ -1,4 +1,4 @@
-package uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes
+package uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.localdeliveryunits
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository

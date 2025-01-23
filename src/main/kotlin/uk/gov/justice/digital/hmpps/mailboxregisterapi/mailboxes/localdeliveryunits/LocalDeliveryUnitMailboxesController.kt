@@ -1,4 +1,4 @@
-package uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes
+package uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.localdeliveryunits
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ValidationErrorResponse
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 import java.util.UUID
 

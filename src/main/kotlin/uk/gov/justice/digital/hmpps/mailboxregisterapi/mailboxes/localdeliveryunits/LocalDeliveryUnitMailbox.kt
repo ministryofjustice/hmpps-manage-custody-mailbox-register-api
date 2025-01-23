@@ -1,4 +1,4 @@
-package uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes
+package uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.localdeliveryunits
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
