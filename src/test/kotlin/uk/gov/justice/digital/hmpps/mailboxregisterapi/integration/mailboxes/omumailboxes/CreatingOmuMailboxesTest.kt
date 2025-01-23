@@ -11,6 +11,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.jdbc.Sql
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.OffenderManagementUnitMailboxRepository
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.OffenderManagementUnitRole
 
 private const val BASE_URI: String = "/offender-management-unit-mailboxes"
 
@@ -114,8 +115,7 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
       assertThat(name).isEqualTo("Mailbox Name")
       assertThat(emailAddress).isEqualTo("omu@example.com")
       assertThat(prisonCode).isEqualTo("LEI")
-      assertThat(role).isEqualTo("CVL")
+      assertThat(role).isEqualTo(OffenderManagementUnitRole.CVL)
     }
   }
-
 }

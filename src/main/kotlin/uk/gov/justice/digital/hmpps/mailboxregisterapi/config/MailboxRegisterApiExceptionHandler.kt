@@ -14,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.resource.NoResourceFoundException
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.ValidationErrorResponse
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 
 @RestControllerAdvice
@@ -30,28 +31,29 @@ class MailboxRegisterApiExceptionHandler {
     ).also { log.info("Validation exception: {}", e.message) }
 
   @ExceptionHandler(MethodArgumentNotValidException::class)
-  fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseEntity<Any> = ResponseEntity
+  fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseEntity<ValidationErrorResponse> = ResponseEntity
     .badRequest()
     .body(
-      mapOf(
-        "errors" to e.bindingResult.fieldErrors.associate { it.field to it.defaultMessage },
-        "message" to "Validation failed",
-        "status" to BAD_REQUEST.value(),
+      ValidationErrorResponse(
+        errors = e.bindingResult.fieldErrors.associate { it.field to it.defaultMessage },
+        message = "Validation failed",
+        status = BAD_REQUEST.value(),
       ),
     )
 
   @ExceptionHandler(HttpMessageNotReadableException::class)
-  fun handleHttpMessageNotReadableException(e: HttpMessageNotReadableException): ResponseEntity<Any> {
+  fun handleHttpMessageNotReadableException(e: HttpMessageNotReadableException): ResponseEntity<ValidationErrorResponse> {
     when (e.cause) {
       is InvalidFormatException -> {
-        if ((e.cause as InvalidFormatException).targetType.isEnum)
+        if ((e.cause as InvalidFormatException).targetType.isEnum) {
           return handleInvalidEnumValues(e.cause as InvalidFormatException)
+        }
       }
     }
     throw e
   }
 
-  private fun handleInvalidEnumValues(invalidFormatException: InvalidFormatException): ResponseEntity<Any> {
+  private fun handleInvalidEnumValues(invalidFormatException: InvalidFormatException): ResponseEntity<ValidationErrorResponse> {
     val fieldName = invalidFormatException.path[0].fieldName
     val correctValues = invalidFormatException.targetType.enumConstants.joinToString(",")
     val message = "must be one of $correctValues"
@@ -59,11 +61,11 @@ class MailboxRegisterApiExceptionHandler {
     return ResponseEntity
       .badRequest()
       .body(
-        mapOf(
-          "errors" to mapOf(fieldName to message),
-          "message" to "Validation failed",
-          "status" to BAD_REQUEST.value(),
-        )
+        ValidationErrorResponse(
+          errors = mapOf(fieldName to message),
+          message = "Validation failed",
+          status = BAD_REQUEST.value(),
+        ),
       )
   }
 

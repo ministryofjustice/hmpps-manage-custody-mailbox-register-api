@@ -1,6 +1,12 @@
 package uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes
 
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Table
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import org.hibernate.annotations.ColumnDefault
@@ -10,7 +16,8 @@ import java.time.OffsetDateTime
 import java.util.*
 
 enum class OffenderManagementUnitRole {
-  CVL, HDC
+  CVL,
+  HDC,
 }
 
 @Entity
