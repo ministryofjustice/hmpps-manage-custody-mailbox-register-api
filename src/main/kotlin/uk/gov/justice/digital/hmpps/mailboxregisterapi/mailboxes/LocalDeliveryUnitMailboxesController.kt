@@ -37,7 +37,7 @@ class LocalDeliveryUnitMailboxesController(
       ApiResponse(
         responseCode = "400",
         description = "Bad request",
-        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ValidationErrorResponse::class))],
       ),
       ApiResponse(
         responseCode = "401",
@@ -114,7 +114,7 @@ class LocalDeliveryUnitMailboxesController(
       ApiResponse(
         responseCode = "400",
         description = "Bad request",
-        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ValidationErrorResponse::class))],
       ),
       ApiResponse(
         responseCode = "401",
