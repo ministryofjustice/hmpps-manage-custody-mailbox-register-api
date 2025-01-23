@@ -75,7 +75,7 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
       .bodyValue(attributes)
       .exchange()
       .expectStatus().isBadRequest
-      .expectBody().jsonPath("$.errors.role").isEqualTo("must be either CVL or HDC")
+      .expectBody().jsonPath("$.errors.role").isEqualTo("must be one of CVL,HDC")
 
     assertThat(offenderManagementUnitMailboxRepository.count()).isZero
   }

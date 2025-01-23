@@ -1,5 +1,6 @@
 package uk.gov.justice.digital.hmpps.mailboxregisterapi.config
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import jakarta.validation.ValidationException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus.BAD_REQUEST
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus.FORBIDDEN
 import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -37,6 +39,33 @@ class MailboxRegisterApiExceptionHandler {
         "status" to BAD_REQUEST.value(),
       ),
     )
+
+  @ExceptionHandler(HttpMessageNotReadableException::class)
+  fun handleHttpMessageNotReadableException(e: HttpMessageNotReadableException): ResponseEntity<Any> {
+    when (e.cause) {
+      is InvalidFormatException -> {
+        if ((e.cause as InvalidFormatException).targetType.isEnum)
+          return handleInvalidEnumValues(e.cause as InvalidFormatException)
+      }
+    }
+    throw e
+  }
+
+  private fun handleInvalidEnumValues(invalidFormatException: InvalidFormatException): ResponseEntity<Any> {
+    val fieldName = invalidFormatException.path[0].fieldName
+    val correctValues = invalidFormatException.targetType.enumConstants.joinToString(",")
+    val message = "must be one of $correctValues"
+
+    return ResponseEntity
+      .badRequest()
+      .body(
+        mapOf(
+          "errors" to mapOf(fieldName to message),
+          "message" to "Validation failed",
+          "status" to BAD_REQUEST.value(),
+        )
+      )
+  }
 
   @ExceptionHandler(NoResourceFoundException::class)
   fun handleNoResourceFoundException(e: NoResourceFoundException): ResponseEntity<ErrorResponse> = ResponseEntity

@@ -3,12 +3,15 @@ package uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.Pattern
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.OffsetDateTime
 import java.util.*
+
+enum class OffenderManagementUnitRole {
+  CVL, HDC
+}
 
 @Entity
 @Table(name = "offender_management_unit_mailboxes")
@@ -26,8 +29,8 @@ class OffenderManagementUnitMailbox(
   @field:NotBlank
   var prisonCode: String? = "",
 
-  @field:NotBlank @field:Pattern(regexp = "CVL|HDC", message = "must be either CVL or HDC")
-  var role: String? = null,
+  @Enumerated(EnumType.STRING)
+  var role: OffenderManagementUnitRole? = null,
 
   @CreationTimestamp
   var createdAt: OffsetDateTime? = null,
