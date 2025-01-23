@@ -1,4 +1,4 @@
-package uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes
+package uk.gov.justice.digital.hmpps.mailboxregisterapi
 
 import io.swagger.v3.oas.annotations.media.Schema
 
