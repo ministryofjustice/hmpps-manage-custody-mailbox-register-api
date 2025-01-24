@@ -9,10 +9,8 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.context.jdbc.Sql
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.PrisonCode
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitMailboxRepository
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitRole
 
 private const val BASE_URI: String = "/offender-management-unit-mailboxes"
 
@@ -115,8 +113,8 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
     offenderManagementUnitMailboxRepository.findAll().first().apply {
       assertThat(name).isEqualTo("Mailbox Name")
       assertThat(emailAddress).isEqualTo("omu@example.com")
-      assertThat(prisonCode).isEqualTo(PrisonCode.LEI)
-      assertThat(role).isEqualTo(OffenderManagementUnitRole.CVL)
+      assertThat(prisonCode.toString()).isEqualTo("LEI")
+      assertThat(role.toString()).isEqualTo("CVL")
     }
   }
 }
