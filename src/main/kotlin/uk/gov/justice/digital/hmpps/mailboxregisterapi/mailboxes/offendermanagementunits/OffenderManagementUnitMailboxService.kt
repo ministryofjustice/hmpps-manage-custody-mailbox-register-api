@@ -22,6 +22,20 @@ class OffenderManagementUnitMailboxService(
   }
 
   @Transactional
+  fun updateMailbox(id: UUID, mailbox: OffenderManagementUnitMailboxForm): OffenderManagementUnitMailbox {
+    val existingMailbox = getMailboxById(id)
+
+    existingMailbox.apply {
+      name = mailbox.name
+      emailAddress = mailbox.emailAddress
+      prisonCode = mailbox.prisonCode
+      role = mailbox.role
+    }
+
+    return repository.saveAndFlush(existingMailbox)
+  }
+
+  @Transactional
   fun listMailboxes(): List<OffenderManagementUnitMailbox> {
     return repository.findAll(Sort.by(Sort.Direction.ASC, OffenderManagementUnitMailbox::createdAt.name))
   }
