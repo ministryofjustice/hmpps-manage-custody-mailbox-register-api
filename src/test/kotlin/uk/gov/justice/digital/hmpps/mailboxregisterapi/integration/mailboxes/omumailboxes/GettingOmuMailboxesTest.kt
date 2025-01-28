@@ -6,9 +6,11 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.test.context.jdbc.Sql
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.PrisonCode
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitMailbox
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitMailboxRepository
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitRole
 
 private const val DUMMY_MAILBOX_ID = "8d044b2e-96b1-45ef-a2ce-cce9c6f6a0c2"
 private const val BASE_URI: String = "/offender-management-unit-mailboxes"
@@ -79,8 +81,8 @@ class GettingOmuMailboxesTest : IntegrationTestBase() {
       Assertions.assertThat(id).isEqualTo(mailboxId)
       Assertions.assertThat(name).isEqualTo("Test OMU Mailbox 1")
       Assertions.assertThat(emailAddress).isEqualTo("omu1@example.com")
-      Assertions.assertThat(prisonCode.toString()).isEqualTo("LEI")
-      Assertions.assertThat(role.toString()).isEqualTo("CVL")
+      Assertions.assertThat(prisonCode).isEqualTo(PrisonCode.LEI)
+      Assertions.assertThat(role).isEqualTo(OffenderManagementUnitRole.CVL)
       Assertions.assertThat(createdAt).isNotNull
       Assertions.assertThat(updatedAt).isNotNull
     }

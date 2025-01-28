@@ -9,8 +9,10 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.context.jdbc.Sql
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.PrisonCode
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitMailboxRepository
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitRole
 
 private const val BASE_URI: String = "/offender-management-unit-mailboxes"
 
@@ -27,8 +29,8 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
     attributes = HashMap<String, String?>().apply {
       put("name", "Mailbox Name")
       put("emailAddress", "omu@example.com")
-      put("prisonCode", "LEI")
-      put("role", "CVL")
+      put("prisonCode", PrisonCode.LEI.name)
+      put("role", OffenderManagementUnitRole.CVL.name)
     }
   }
 
@@ -81,7 +83,7 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = ["prisonCode", "emailAddress"])
+  @ValueSource(strings = ["role", "prisonCode", "emailAddress"])
   fun `without the required fields mailboxes are not created`(nullFieldName: String) {
     val invalidAttributes = attributes.toMutableMap().apply {
       this[nullFieldName] = null
@@ -111,10 +113,10 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
     assertThat(offenderManagementUnitMailboxRepository.count()).isOne()
 
     offenderManagementUnitMailboxRepository.findAll().first().apply {
-      assertThat(name).isEqualTo("Mailbox Name")
-      assertThat(emailAddress).isEqualTo("omu@example.com")
-      assertThat(prisonCode.toString()).isEqualTo("LEI")
-      assertThat(role.toString()).isEqualTo("CVL")
+      assertThat(name).isEqualTo(attributes["name"])
+      assertThat(emailAddress).isEqualTo(attributes["emailAddress"])
+      assertThat(prisonCode.toString()).isEqualTo(attributes["prisonCode"])
+      assertThat(role.toString()).isEqualTo(attributes["role"])
     }
   }
 }
