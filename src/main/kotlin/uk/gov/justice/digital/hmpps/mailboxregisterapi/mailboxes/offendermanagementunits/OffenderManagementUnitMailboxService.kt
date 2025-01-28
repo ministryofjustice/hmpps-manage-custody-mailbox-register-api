@@ -25,4 +25,9 @@ class OffenderManagementUnitMailboxService(
   fun listMailboxes(): List<OffenderManagementUnitMailbox> {
     return repository.findAll(Sort.by(Sort.Direction.ASC, OffenderManagementUnitMailbox::createdAt.name))
   }
+
+  @Transactional
+  fun deleteMailbox(id: UUID) {
+    repository.delete(getMailboxById(id))
+  }
 }
