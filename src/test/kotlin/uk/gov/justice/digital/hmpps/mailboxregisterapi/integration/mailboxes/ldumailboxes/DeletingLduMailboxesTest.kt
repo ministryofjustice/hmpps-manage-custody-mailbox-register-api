@@ -62,7 +62,7 @@ class DeletingLduMailboxesTest : IntegrationTestBase() {
   )
   @Test
   fun `should delete the mailbox if it exists`() {
-    val mailboxId = localDeliveryUnitMailboxes.findAll().first().id
+    val mailboxId = localDeliveryUnitMailboxes.findAll().first().id!!
     Assertions.assertThat(mailboxId).isNotNull
 
     webTestClient.delete()
@@ -72,6 +72,6 @@ class DeletingLduMailboxesTest : IntegrationTestBase() {
       .expectStatus()
       .isOk
 
-    Assertions.assertThat(mailboxId?.let { localDeliveryUnitMailboxes.findById(it) }).isNull()
+    Assertions.assertThat(localDeliveryUnitMailboxes.findById(mailboxId)).isEmpty
   }
 }

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -49,4 +50,26 @@ class OffenderManagementUnitMailboxesController(
   )
   fun create(@Valid @RequestBody newMailbox: OffenderManagementUnitMailboxForm) =
     offenderManagementUnitMailboxService.createMailbox(newMailbox)
+
+  @GetMapping(value = [""])
+  @ResponseStatus(code = HttpStatus.OK)
+  @Operation(
+    summary = "Lists all offender management unit mailboxes",
+    description = "Lists all offender management unit mailboxes",
+    security = [SecurityRequirement(name = "mailbox-register-api-ui-role")],
+    responses = [
+      ApiResponse(responseCode = "200", description = "The list of offender management unit mailboxes"),
+      ApiResponse(
+        responseCode = "401",
+        description = "Unauthorized access to this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+      ApiResponse(
+        responseCode = "403",
+        description = "Forbidden access to this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+    ],
+  )
+  fun list() = offenderManagementUnitMailboxService.listMailboxes()
 }

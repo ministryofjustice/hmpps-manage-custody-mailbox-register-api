@@ -5,6 +5,4 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface LocalDeliveryUnitMailboxRepository : JpaRepository<LocalDeliveryUnitMailbox, String> {
-  fun findById(id: UUID): LocalDeliveryUnitMailbox?
-}
+interface LocalDeliveryUnitMailboxRepository : JpaRepository<LocalDeliveryUnitMailbox, UUID>
