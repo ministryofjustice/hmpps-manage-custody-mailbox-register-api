@@ -6,9 +6,9 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.PrisonCode
 
-@Schema(description = "Fields to enable the creation and updating of a LocalDeliveryUnitMailbox entity")
+@Schema(description = "Fields to enable the creation and updating of a OffenderManagementUnitMailbox entity")
 class OffenderManagementUnitMailboxForm(
-  @Schema(description = "The OMUs email address", example = "ldu@justice.gov.uk")
+  @Schema(description = "The OMUs email address", example = "omu@justice.gov.uk")
   @field:NotBlank
   @field:Email
   var emailAddress: String? = "",
