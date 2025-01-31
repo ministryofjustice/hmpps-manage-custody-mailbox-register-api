@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLog
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 import java.util.UUID
 
@@ -26,6 +27,7 @@ import java.util.UUID
 @RequestMapping(value = ["/offender-management-unit-mailboxes"], produces = ["application/json"])
 class OffenderManagementUnitMailboxesController(
   private val offenderManagementUnitMailboxService: OffenderManagementUnitMailboxService,
+  private val auditLog: AuditLog,
 ) {
   @PostMapping(value = [""])
   @ResponseStatus(code = HttpStatus.CREATED)
@@ -54,6 +56,7 @@ class OffenderManagementUnitMailboxesController(
   )
   fun create(@Valid @RequestBody newMailbox: OffenderManagementUnitMailboxForm) =
     offenderManagementUnitMailboxService.createMailbox(newMailbox)
+      .also { auditLog.logCreationOf(it) }
 
   @GetMapping(value = [""])
   @ResponseStatus(code = HttpStatus.OK)
@@ -135,7 +138,10 @@ class OffenderManagementUnitMailboxesController(
     ],
   )
   fun update(@PathVariable(name = "id") id: UUID, @Valid @RequestBody mailbox: OffenderManagementUnitMailboxForm) =
-    offenderManagementUnitMailboxService.updateMailbox(id, mailbox)
+    auditLog.logUpdatesTo(
+      offenderManagementUnitMailboxService.getMailboxById(id),
+      offenderManagementUnitMailboxService.updateMailbox(id, mailbox),
+    )
 
   @DeleteMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
@@ -162,5 +168,8 @@ class OffenderManagementUnitMailboxesController(
       ),
     ],
   )
-  fun delete(@PathVariable(name = "id") id: UUID) = offenderManagementUnitMailboxService.deleteMailbox(id)
+  fun delete(@PathVariable(name = "id") id: UUID) =
+    offenderManagementUnitMailboxService.deleteMailbox(id).also {
+      auditLog.logDeletionOf(OffenderManagementUnitMailbox(id = id))
+    }
 }

@@ -10,12 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.context.jdbc.Sql
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.PrisonCode
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditAction
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLogEntryRepository
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitMailboxRepository
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitRole
 
 private const val BASE_URI: String = "/offender-management-unit-mailboxes"
 
+@Sql("classpath:test_data/reset.sql")
 @DisplayName("POST /offender-management-unit-mailboxes")
 class CreatingOmuMailboxesTest : IntegrationTestBase() {
 
@@ -23,6 +26,9 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
 
   @Autowired
   lateinit var offenderManagementUnitMailboxRepository: OffenderManagementUnitMailboxRepository
+
+  @Autowired
+  lateinit var auditLogEntryRepository: AuditLogEntryRepository
 
   @BeforeEach
   fun setup() {
@@ -117,6 +123,24 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
       assertThat(emailAddress).isEqualTo(attributes["emailAddress"])
       assertThat(prisonCode.toString()).isEqualTo(attributes["prisonCode"])
       assertThat(role.toString()).isEqualTo(attributes["role"])
+    }
+  }
+
+  @Test
+  fun `creation is audit logged`() {
+    webTestClient.post()
+      .uri(BASE_URI)
+      .headers(setAuthorisation(username = "mailboxUser", roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .bodyValue(attributes)
+      .exchange()
+      .expectStatus().isCreated
+
+    val createdMailbox = offenderManagementUnitMailboxRepository.findAll().first()
+    auditLogEntryRepository.findAll().first().apply {
+      assertThat(subjectId).isEqualTo(createdMailbox.id)
+      assertThat(subjectType).isEqualTo("OffenderManagementUnitMailbox")
+      assertThat(username).isEqualTo("mailboxUser")
+      assertThat(action).isEqualTo(AuditAction.CREATE)
     }
   }
 }

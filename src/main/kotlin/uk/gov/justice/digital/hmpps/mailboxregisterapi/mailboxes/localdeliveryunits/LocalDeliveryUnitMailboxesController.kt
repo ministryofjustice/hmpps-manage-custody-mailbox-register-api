@@ -140,7 +140,7 @@ class LocalDeliveryUnitMailboxesController(
   fun update(@PathVariable(name = "id") id: UUID, @Valid @RequestBody mailbox: LocalDeliveryUnitMailboxForm) =
     auditLog.logUpdatesTo(
       localDeliveryUnitMailboxService.getMailboxById(id),
-      localDeliveryUnitMailboxService.updateMailbox(id, mailbox)
+      localDeliveryUnitMailboxService.updateMailbox(id, mailbox),
     )
 
   @DeleteMapping(value = ["/{id}"])

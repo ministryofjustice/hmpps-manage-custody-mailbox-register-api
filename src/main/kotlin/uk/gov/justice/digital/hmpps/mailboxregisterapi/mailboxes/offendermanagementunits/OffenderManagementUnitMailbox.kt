@@ -14,6 +14,7 @@ import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.PrisonCode
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditableEntity
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -41,4 +42,14 @@ class OffenderManagementUnitMailbox(
 
   @UpdateTimestamp
   var updatedAt: OffsetDateTime? = null,
-)
+) : AuditableEntity {
+  override fun auditableSubjectId(): UUID? = id
+  override fun auditableSubjectType(): String = "OffenderManagementUnitMailbox"
+  override fun auditableFields(): Map<String, Any?> =
+    mapOf(
+      "emailAddress" to emailAddress,
+      "name" to name,
+      "prisonCode" to prisonCode.toString(),
+      "role" to role.toString(),
+    )
+}
