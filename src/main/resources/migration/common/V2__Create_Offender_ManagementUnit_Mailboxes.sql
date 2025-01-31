@@ -1,5 +1,5 @@
 CREATE TABLE public.offender_management_unit_mailboxes (
-    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    id uuid DEFAULT gen_random_uuid(),
     name character varying,
     email_address character varying NOT NULL,
     prison_code character varying NOT NULL,
