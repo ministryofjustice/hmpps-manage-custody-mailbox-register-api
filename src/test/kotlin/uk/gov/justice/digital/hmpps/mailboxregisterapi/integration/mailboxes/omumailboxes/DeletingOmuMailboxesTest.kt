@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.jdbc.Sql
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditAction
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLogEntryRepository
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitMailboxRepository
 
@@ -16,6 +18,9 @@ class DeletingOmuMailboxesTest : IntegrationTestBase() {
 
   @Autowired
   lateinit var offenderManagementUnitMailboxes: OffenderManagementUnitMailboxRepository
+
+  @Autowired
+  lateinit var auditLogEntryRepository: AuditLogEntryRepository
 
   @Test
   fun `should return unauthorized if no token`() {
@@ -73,5 +78,12 @@ class DeletingOmuMailboxesTest : IntegrationTestBase() {
       .isOk
 
     Assertions.assertThat(offenderManagementUnitMailboxes.findById(mailboxId)).isEmpty
+
+    val auditLogEntry = auditLogEntryRepository.findBySubjectId(mailboxId)
+    Assertions.assertThat(auditLogEntry).isNotNull
+    auditLogEntry?.apply {
+      Assertions.assertThat(subjectType).isEqualTo("OffenderManagementUnitMailbox")
+      Assertions.assertThat(action).isEqualTo(AuditAction.DELETE)
+    }
   }
 }

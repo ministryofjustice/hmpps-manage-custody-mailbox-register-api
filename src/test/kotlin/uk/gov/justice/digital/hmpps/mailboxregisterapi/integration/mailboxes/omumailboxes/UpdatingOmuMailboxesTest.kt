@@ -9,6 +9,8 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.PrisonCode
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditAction
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLogEntryRepository
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitMailboxForm
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitMailboxService
@@ -23,6 +25,9 @@ class UpdatingOmuMailboxesTest : IntegrationTestBase() {
 
   @Autowired
   lateinit var offenderManagementUnitMailboxService: OffenderManagementUnitMailboxService
+
+  @Autowired
+  lateinit var auditLogEntryRepository: AuditLogEntryRepository
 
   @BeforeEach
   fun setup() {
@@ -89,6 +94,13 @@ class UpdatingOmuMailboxesTest : IntegrationTestBase() {
         Assertions.assertThat(emailAddress).isEqualTo(attributes["emailAddress"])
         Assertions.assertThat(prisonCode.toString()).isEqualTo(attributes["prisonCode"])
         Assertions.assertThat(role.toString()).isEqualTo(attributes["role"])
+      }
+
+      val auditLogEntry = auditLogEntryRepository.findBySubjectId(mailboxId)
+      Assertions.assertThat(auditLogEntry).isNotNull
+      auditLogEntry?.apply {
+        Assertions.assertThat(subjectType).isEqualTo("OffenderManagementUnitMailbox")
+        Assertions.assertThat(action).isEqualTo(AuditAction.UPDATE)
       }
     }
   }

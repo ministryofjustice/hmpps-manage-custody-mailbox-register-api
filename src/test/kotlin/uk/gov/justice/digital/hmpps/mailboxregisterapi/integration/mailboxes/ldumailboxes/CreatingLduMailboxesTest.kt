@@ -8,16 +8,23 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
+import org.springframework.test.context.jdbc.Sql
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditAction
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLogEntryRepository
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.localdeliveryunits.LocalDeliveryUnitMailboxRepository
 
 private const val BASE_URI: String = "/local-delivery-unit-mailboxes"
 
+@Sql("classpath:test_data/reset.sql")
 @DisplayName("POST /local-delivery-unit-mailboxes")
 class CreatingLduMailboxesTest : IntegrationTestBase() {
 
   @Autowired
   lateinit var localDeliveryUnitMailboxes: LocalDeliveryUnitMailboxRepository
+
+  @Autowired
+  lateinit var auditLogEntries: AuditLogEntryRepository
 
   private lateinit var attributes: HashMap<String, String?>
 
@@ -100,5 +107,23 @@ class CreatingLduMailboxesTest : IntegrationTestBase() {
       .expectBody().jsonPath("$.errors.$nullFieldName").isEqualTo("must not be blank")
 
     Assertions.assertThat(localDeliveryUnitMailboxes.count()).isZero
+  }
+
+  @Test
+  fun `creation is audit logged`() {
+    webTestClient.post()
+      .uri(BASE_URI)
+      .headers(setAuthorisation(username = "mailboxUser", roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .bodyValue(attributes)
+      .exchange()
+      .expectStatus().isCreated
+
+    val createdMailbox = localDeliveryUnitMailboxes.findAll().first()
+    auditLogEntries.findAll().first().apply {
+      Assertions.assertThat(subjectId).isEqualTo(createdMailbox.id)
+      Assertions.assertThat(subjectType).isEqualTo("LocalDeliveryUnitMailbox")
+      Assertions.assertThat(username).isEqualTo("mailboxUser")
+      Assertions.assertThat(action).isEqualTo(AuditAction.CREATE)
+    }
   }
 }
