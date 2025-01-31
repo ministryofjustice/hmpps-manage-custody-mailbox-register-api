@@ -1,5 +1,5 @@
 CREATE TABLE public.local_delivery_unit_mailboxes (
-    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    id uuid DEFAULT gen_random_uuid(),
     name character varying,
     unit_code character varying NOT NULL,
     area_code character varying NOT NULL,
