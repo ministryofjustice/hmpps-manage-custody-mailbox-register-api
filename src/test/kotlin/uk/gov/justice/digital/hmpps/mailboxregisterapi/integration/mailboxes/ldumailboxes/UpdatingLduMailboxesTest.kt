@@ -8,6 +8,8 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditAction
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLogEntryRepository
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.localdeliveryunits.LocalDeliveryUnitMailboxForm
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.localdeliveryunits.LocalDeliveryUnitMailboxService
@@ -21,6 +23,9 @@ class UpdatingLduMailboxesTest : IntegrationTestBase() {
 
   @Autowired
   lateinit var localDeliveryUnitMailboxService: LocalDeliveryUnitMailboxService
+
+  @Autowired
+  lateinit var auditLogEntryRepository: AuditLogEntryRepository
 
   @BeforeEach
   fun setup() {
@@ -90,6 +95,13 @@ class UpdatingLduMailboxesTest : IntegrationTestBase() {
         Assertions.assertThat(name).isEqualTo("Updated Mailbox Name")
         Assertions.assertThat(emailAddress).isEqualTo("updated-ldu@example.com")
         Assertions.assertThat(country).isEqualTo("Wales")
+      }
+
+      val auditLogEntry = auditLogEntryRepository.findBySubjectId(mailboxId)
+      Assertions.assertThat(auditLogEntry).isNotNull
+      auditLogEntry?.apply {
+        Assertions.assertThat(subjectType).isEqualTo("LocalDeliveryUnitMailbox")
+        Assertions.assertThat(action).isEqualTo(AuditAction.UPDATE)
       }
     }
   }

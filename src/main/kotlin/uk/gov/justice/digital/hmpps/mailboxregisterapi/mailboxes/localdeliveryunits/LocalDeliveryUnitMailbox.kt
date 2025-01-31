@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotBlank
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditableEntity
 import java.time.OffsetDateTime
 import java.util.UUID
 
@@ -39,4 +40,15 @@ class LocalDeliveryUnitMailbox(
 
   @UpdateTimestamp
   var updatedAt: OffsetDateTime? = null,
-)
+) : AuditableEntity {
+  override fun auditableSubjectId(): UUID? = id
+  override fun auditableSubjectType(): String = "LocalDeliveryUnitMailbox"
+  override fun auditableFields(): Map<String, Any?> =
+    mapOf(
+      "emailAddress" to emailAddress,
+      "unitCode" to unitCode,
+      "areaCode" to areaCode,
+      "country" to country,
+      "name" to name,
+    )
+}

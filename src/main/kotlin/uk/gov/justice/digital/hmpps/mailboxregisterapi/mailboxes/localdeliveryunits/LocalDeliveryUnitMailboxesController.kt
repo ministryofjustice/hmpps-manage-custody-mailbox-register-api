@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLog
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 import java.util.UUID
 
@@ -26,6 +27,7 @@ import java.util.UUID
 @RequestMapping(value = ["/local-delivery-unit-mailboxes"], produces = ["application/json"])
 class LocalDeliveryUnitMailboxesController(
   private val localDeliveryUnitMailboxService: LocalDeliveryUnitMailboxService,
+  private val auditLog: AuditLog,
 ) {
   @PostMapping(value = [""])
   @ResponseStatus(code = HttpStatus.CREATED)
@@ -54,6 +56,7 @@ class LocalDeliveryUnitMailboxesController(
   )
   fun create(@Valid @RequestBody newMailbox: LocalDeliveryUnitMailboxForm) =
     localDeliveryUnitMailboxService.createMailbox(newMailbox)
+      .also { auditLog.logCreationOf(it) }
 
   @GetMapping(value = [""])
   @ResponseStatus(code = HttpStatus.OK)
@@ -135,7 +138,10 @@ class LocalDeliveryUnitMailboxesController(
     ],
   )
   fun update(@PathVariable(name = "id") id: UUID, @Valid @RequestBody mailbox: LocalDeliveryUnitMailboxForm) =
-    localDeliveryUnitMailboxService.updateMailbox(id, mailbox)
+    auditLog.logUpdatesTo(
+      localDeliveryUnitMailboxService.getMailboxById(id),
+      localDeliveryUnitMailboxService.updateMailbox(id, mailbox)
+    )
 
   @DeleteMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
@@ -162,5 +168,8 @@ class LocalDeliveryUnitMailboxesController(
       ),
     ],
   )
-  fun delete(@PathVariable(name = "id") id: UUID) = localDeliveryUnitMailboxService.deleteMailbox(id)
+  fun delete(@PathVariable(name = "id") id: UUID) =
+    localDeliveryUnitMailboxService.deleteMailbox(id).also {
+      auditLog.logDeletionOf(LocalDeliveryUnitMailbox(id = id))
+    }
 }
