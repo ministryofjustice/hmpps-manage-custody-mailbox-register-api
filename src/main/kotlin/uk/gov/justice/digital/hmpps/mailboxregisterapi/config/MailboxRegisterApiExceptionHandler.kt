@@ -14,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.resource.NoResourceFoundException
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.FailedValidationException
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.ValidationErrorResponse
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 
@@ -36,6 +37,17 @@ class MailboxRegisterApiExceptionHandler {
     .body(
       ValidationErrorResponse(
         errors = e.bindingResult.fieldErrors.associate { it.field to it.defaultMessage },
+        message = "Validation failed",
+        status = BAD_REQUEST.value(),
+      ),
+    )
+
+  @ExceptionHandler(FailedValidationException::class)
+  fun handleValidationException(e: FailedValidationException): ResponseEntity<ValidationErrorResponse> = ResponseEntity
+    .badRequest()
+    .body(
+      ValidationErrorResponse(
+        errors = e.responseBody,
         message = "Validation failed",
         status = BAD_REQUEST.value(),
       ),

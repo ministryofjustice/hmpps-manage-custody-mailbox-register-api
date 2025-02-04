@@ -22,6 +22,11 @@ class LocalDeliveryUnitMailboxService(
   }
 
   @Transactional
+  fun mailboxExists(id: UUID): Boolean {
+    return repository.findById(id).orElse(null) != null
+  }
+
+  @Transactional
   fun listMailboxes(): List<LocalDeliveryUnitMailbox> {
     return repository.findAll(Sort.by(Sort.Direction.ASC, LocalDeliveryUnitMailbox::createdAt.name))
   }
