@@ -39,7 +39,7 @@ class ProbationTeam(
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "local_delivery_unit_mailbox_id", nullable = false)
   var localDeliveryUnitMailbox: LocalDeliveryUnitMailbox? = null,
-): AuditableEntity {
+) : AuditableEntity {
   override fun auditableSubjectId() = id
   override fun auditableSubjectType() = "ProbationTeam"
   override fun auditableFields() = mapOf(
