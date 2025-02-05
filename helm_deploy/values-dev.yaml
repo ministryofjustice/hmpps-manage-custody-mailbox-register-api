@@ -3,7 +3,7 @@
 
 generic-service:
   ingress:
-    host: mailbox-register-api-dev.hmpps.service.justice.gov.uk
+    host: manage-custody-mailbox-register-api-dev.hmpps.service.justice.gov.uk
 
   env:
     APPLICATIONINSIGHTS_CONFIGURATION_FILE: "applicationinsights.dev.json"
