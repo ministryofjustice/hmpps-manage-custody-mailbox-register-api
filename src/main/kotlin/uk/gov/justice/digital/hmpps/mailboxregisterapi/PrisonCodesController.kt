@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 
 @RestController
-@PreAuthorize("hasRole('MAILBOX_REGISTER_ADMIN')")
+@PreAuthorize("hasRole('MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN')")
 @RequestMapping(value = ["/prison-codes"], produces = ["application/json"])
 class PrisonCodesController {
   @GetMapping(value = [""])

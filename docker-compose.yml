@@ -1,11 +1,11 @@
 version: "3"
 services:
-  hmpps-mailbox-register-api:
+  hmpps-manage-custody-mailbox-register-api:
     build:
       context: .
     networks:
       - hmpps
-    container_name: hmpps-mailbox-register-api
+    container_name: hmpps-manage-custody-mailbox-register-api
     ports:
       - "8080:8080"
     healthcheck:

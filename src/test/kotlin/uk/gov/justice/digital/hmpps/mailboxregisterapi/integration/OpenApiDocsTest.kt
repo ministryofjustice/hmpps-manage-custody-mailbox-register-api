@@ -83,7 +83,7 @@ class OpenApiDocsTest : IntegrationTestBase() {
   }
 
   @ParameterizedTest
-  @CsvSource(value = ["mailbox-register-api-ui-role, MAILBOX_REGISTER_ADMIN"])
+  @CsvSource(value = ["mailbox-register-api-ui-role, MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN"])
   fun `the security scheme is setup for bearer tokens`(key: String, role: String) {
     webTestClient.get()
       .uri("/v3/api-docs")

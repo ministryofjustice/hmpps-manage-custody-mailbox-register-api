@@ -28,7 +28,7 @@ ADD https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem /home/appu
 RUN chmod +r /home/appuser/.postgresql/root.crt
 
 WORKDIR /app
-COPY --from=builder --chown=appuser:appgroup /app/build/libs/hmpps-mailbox-register-api*.jar /app/app.jar
+COPY --from=builder --chown=appuser:appgroup /app/build/libs/hmpps-manage-custody-mailbox-register-api*.jar /app/app.jar
 COPY --from=builder --chown=appuser:appgroup /app/build/libs/applicationinsights-agent*.jar /app/agent.jar
 COPY --from=builder --chown=appuser:appgroup /app/applicationinsights.json /app
 COPY --from=builder --chown=appuser:appgroup /app/applicationinsights.dev.json /app

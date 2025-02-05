@@ -23,7 +23,7 @@ import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 import java.util.UUID
 
 @RestController
-@PreAuthorize("hasRole('MAILBOX_REGISTER_ADMIN')")
+@PreAuthorize("hasRole('MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN')")
 @RequestMapping(value = ["/offender-management-unit-mailboxes"], produces = ["application/json"])
 class OffenderManagementUnitMailboxesController(
   private val offenderManagementUnitMailboxService: OffenderManagementUnitMailboxService,

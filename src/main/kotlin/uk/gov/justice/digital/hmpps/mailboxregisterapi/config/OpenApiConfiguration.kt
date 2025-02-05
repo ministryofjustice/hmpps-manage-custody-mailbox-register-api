@@ -40,7 +40,7 @@ class OpenApiConfiguration(buildProperties: BuildProperties) {
     .components(
       Components().addSecuritySchemes(
         "mailbox-register-api-ui-role",
-        SecurityScheme().addBearerJwtRequirement("MAILBOX_REGISTER_ADMIN"),
+        SecurityScheme().addBearerJwtRequirement("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN"),
       ),
     )
     .addSecurityItem(SecurityRequirement().addList("mailbox-register-api-ui-role", listOf("read", "write")))
