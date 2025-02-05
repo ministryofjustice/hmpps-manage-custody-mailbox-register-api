@@ -14,4 +14,4 @@ generic-service:
 generic-prometheus-alerts:
   businessHoursOnly: true
   rdsAlertsDatabases:
-    cloud-platform-0fe9a888cb3b2b30: dev
+    cloud-platform-124557911c60622b: dev
