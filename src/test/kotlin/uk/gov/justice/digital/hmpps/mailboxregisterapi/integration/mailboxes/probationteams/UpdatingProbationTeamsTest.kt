@@ -52,7 +52,7 @@ class UpdatingProbationTeamsTest : IntegrationTestBase() {
   fun `Updating a probation team`() {
     webTestClient.put()
       .uri(apiUrl)
-      .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN"), username = "dummy-username"))
+      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN"), username = "dummy-username"))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(attributes)
       .exchange()
@@ -85,7 +85,7 @@ class UpdatingProbationTeamsTest : IntegrationTestBase() {
 
     webTestClient.put()
       .uri(apiUrl)
-      .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(attributes)
       .exchange()
