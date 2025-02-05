@@ -10,6 +10,8 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.ColumnDefault
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditableEntity
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.localdeliveryunits.LocalDeliveryUnitMailbox
 import java.time.OffsetDateTime
@@ -29,10 +31,10 @@ class ProbationTeam(
   @NotNull
   var emailAddress: String? = null,
 
-  @ColumnDefault("CURRENT_TIMESTAMP")
+  @CreationTimestamp
   var createdAt: OffsetDateTime? = null,
 
-  @ColumnDefault("CURRENT_TIMESTAMP")
+  @UpdateTimestamp
   var updatedAt: OffsetDateTime? = null,
 
   @NotNull

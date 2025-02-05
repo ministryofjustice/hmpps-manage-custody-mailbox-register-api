@@ -7,4 +7,5 @@ import java.util.UUID
 @Repository
 interface AuditLogEntryRepository : JpaRepository<AuditLogEntry, UUID> {
   fun findBySubjectId(subjectId: UUID): AuditLogEntry?
+  fun getAllBySubjectIdAndSubjectType(subjectId: UUID, subjectType: String): List<AuditLogEntry>
 }
