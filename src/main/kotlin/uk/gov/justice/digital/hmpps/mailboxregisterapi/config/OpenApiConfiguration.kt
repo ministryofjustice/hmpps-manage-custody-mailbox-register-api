@@ -29,7 +29,7 @@ class OpenApiConfiguration(buildProperties: BuildProperties) {
   fun customOpenAPI(): OpenAPI = OpenAPI()
     .servers(
       listOf(
-        Server().url("https://mailbox-register-api-dev.hmpps.service.justice.gov.uk").description("Development"),
+        Server().url("https://manage-custody-mailbox-register-api-dev.hmpps.service.justice.gov.uk").description("Development"),
         Server().url("http://localhost:8080").description("Local"),
       ),
     )
