@@ -5,19 +5,19 @@
 # Variables in `helm_deploy/values-[env].yaml` will take precedence.
 
 generic-service:
-  nameOverride: hmpps-mailbox-register-api
+  nameOverride: hmpps-manage-custody-mailbox-register-api
   productId: DPS030 # TODO: Update with correct product ID
 
   replicaCount: 2
 
   image:
-    repository: ghcr.io/ministryofjustice/hmpps-mailbox-register-api
+    repository: ghcr.io/ministryofjustice/hmpps-manage-custody-mailbox-register-api
     tag: app_version # overridden at deployment time
     port: 8080
 
   ingress:
     enabled: true
-    tlsSecretName: hmpps-mailbox-register-api-cert
+    tlsSecretName: hmpps-manage-custody-mailbox-register-api-cert
 
   # https://github.com/ministryofjustice/hmpps-ip-allowlists/blob/main/ip-allowlist-groups.yaml
   allowlist:
@@ -57,5 +57,5 @@ generic-service:
       CLIENT_CREDS_CLIENT_SECRET: 'CLIENT_CREDS_CLIENT_SECRET'
 
 generic-prometheus-alerts:
-  targetApplication: hmpps-mailbox-register-api
+  targetApplication: hmpps-manage-custody-mailbox-register-api
   alertSeverity: moic

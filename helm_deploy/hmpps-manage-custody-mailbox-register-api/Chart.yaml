@@ -1,7 +1,7 @@
 apiVersion: v2
 appVersion: 1.0.0
 description: A Helm chart for Kubernetes
-name: hmpps-mailbox-register-api
+name: hmpps-manage-custody-mailbox-register-api
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.

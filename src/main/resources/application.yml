@@ -1,5 +1,5 @@
 info.app:
-  name: HMPPS Mailbox Register
+  name: HMPPS Manage Custody Mailbox Register
   version: 1.0
   team:
     name: HMPPS Elephants Team
@@ -7,7 +7,7 @@ info.app:
 
 spring:
   application:
-    name: hmpps-mailbox-register-api
+    name: hmpps-manage-custody-mailbox-register-api
   codec:
     max-in-memory-size: 10MB
 

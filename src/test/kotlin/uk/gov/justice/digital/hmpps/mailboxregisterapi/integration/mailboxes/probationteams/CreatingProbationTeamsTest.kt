@@ -54,7 +54,7 @@ class CreatingProbationTeamsTest : IntegrationTestBase() {
   fun `Creating a probation team`() {
     webTestClient.post()
       .uri(baseUrl)
-      .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(attributes)
       .exchange()
@@ -79,7 +79,7 @@ class CreatingProbationTeamsTest : IntegrationTestBase() {
 
     webTestClient.post()
       .uri(baseUrl)
-      .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(attributes)
       .exchange()

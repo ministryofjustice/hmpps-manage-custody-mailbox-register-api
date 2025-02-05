@@ -16,7 +16,7 @@ class InfoTest : IntegrationTestBase() {
       .expectStatus()
       .isOk
       .expectBody()
-      .jsonPath("build.name").isEqualTo("hmpps-mailbox-register-api")
+      .jsonPath("build.name").isEqualTo("hmpps-manage-custody-mailbox-register-api")
   }
 
   @Test

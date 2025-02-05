@@ -78,7 +78,7 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
 
     webTestClient.post()
       .uri(BASE_URI)
-      .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(attributes)
       .exchange()
@@ -97,7 +97,7 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
 
     webTestClient.post()
       .uri(BASE_URI)
-      .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(invalidAttributes)
       .exchange()
@@ -111,7 +111,7 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
   fun `are created by submitting the correct details`() {
     webTestClient.post()
       .uri(BASE_URI)
-      .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
       .bodyValue(attributes)
       .exchange()
       .expectStatus().isCreated
@@ -130,7 +130,7 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
   fun `creation is audit logged`() {
     webTestClient.post()
       .uri(BASE_URI)
-      .headers(setAuthorisation(username = "mailboxUser", roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(username = "mailboxUser", roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
       .bodyValue(attributes)
       .exchange()
       .expectStatus().isCreated

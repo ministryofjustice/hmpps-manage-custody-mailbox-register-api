@@ -1,5 +1,5 @@
 ---
-# Per environment values which override defaults in hmpps-mailbox-register-api/values.yaml
+# Per environment values which override defaults in hmpps-manage-custody-mailbox-register-api/values.yaml
 
 generic-service:
   ingress:

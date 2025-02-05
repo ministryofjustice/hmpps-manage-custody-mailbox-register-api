@@ -52,7 +52,7 @@ class GettingLduMailboxesTest : IntegrationTestBase() {
   fun `should return not found if mailbox does not exist`() {
     webTestClient.get()
       .uri("$BASE_URI/$DUMMY_MAILBOX_ID")
-      .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
       .exchange()
       .expectStatus()
       .isNotFound
@@ -69,7 +69,7 @@ class GettingLduMailboxesTest : IntegrationTestBase() {
 
     val mailbox = webTestClient.get()
       .uri("$BASE_URI/$mailboxId")
-      .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
       .exchange()
       .expectStatus()
       .isOk.expectBody(object : ParameterizedTypeReference<LocalDeliveryUnitMailbox>() {})

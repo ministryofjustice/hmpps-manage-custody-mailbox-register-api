@@ -1,1 +1,1 @@
-rootProject.name = "hmpps-mailbox-register-api"
+rootProject.name = "hmpps-manage-custody-mailbox-register-api"

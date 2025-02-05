@@ -84,7 +84,7 @@ class UpdatingOmuMailboxesTest : IntegrationTestBase() {
     if (mailboxId != null) {
       webTestClient.put()
         .uri("$BASE_URI/$mailboxId")
-        .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
+        .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
         .bodyValue(attributes)
         .exchange()
         .expectStatus().isOk
@@ -123,7 +123,7 @@ class UpdatingOmuMailboxesTest : IntegrationTestBase() {
 
     webTestClient.put()
       .uri("$BASE_URI/$mailboxId")
-      .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(invalidAttributes)
       .exchange()

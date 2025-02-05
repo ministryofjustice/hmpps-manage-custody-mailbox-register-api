@@ -18,7 +18,7 @@ import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLog
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 
 @RestController
-@PreAuthorize("hasRole('MAILBOX_REGISTER_ADMIN')")
+@PreAuthorize("hasRole('MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN')")
 @RequestMapping(value = ["/probation-teams"], produces = ["application/json"])
 class ProbationTeamsController(
   private val probationTeamsService: ProbationTeamsService,

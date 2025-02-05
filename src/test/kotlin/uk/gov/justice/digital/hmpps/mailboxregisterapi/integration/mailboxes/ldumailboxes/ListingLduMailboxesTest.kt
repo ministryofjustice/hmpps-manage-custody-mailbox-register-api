@@ -50,7 +50,7 @@ class ListingLduMailboxesTest : IntegrationTestBase() {
   fun `should return a list of existing mailboxes sorted by createdAt ASC`() {
     val mailboxes = webTestClient.get()
       .uri(BASE_URI)
-      .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
       .exchange()
       .expectStatus().isOk
       .expectBody(object : ParameterizedTypeReference<List<LocalDeliveryUnitMailbox>>() {})

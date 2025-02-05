@@ -74,7 +74,7 @@ class CreatingLduMailboxesTest : IntegrationTestBase() {
   fun `are created by submitting the correct details`() {
     webTestClient.post()
       .uri(BASE_URI)
-      .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
       .bodyValue(attributes)
       .exchange()
       .expectStatus().isCreated
@@ -99,7 +99,7 @@ class CreatingLduMailboxesTest : IntegrationTestBase() {
 
     webTestClient.post()
       .uri(BASE_URI)
-      .headers(setAuthorisation(roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(invalidAttributes)
       .exchange()
@@ -113,7 +113,7 @@ class CreatingLduMailboxesTest : IntegrationTestBase() {
   fun `creation is audit logged`() {
     webTestClient.post()
       .uri(BASE_URI)
-      .headers(setAuthorisation(username = "mailboxUser", roles = listOf("MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(username = "mailboxUser", roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
       .bodyValue(attributes)
       .exchange()
       .expectStatus().isCreated
