@@ -51,6 +51,13 @@ class AuditLog(
     )
   }
 
+  fun entriesRegarding(auditableEntity: AuditableEntity): List<AuditLogEntry> {
+    return auditLogEntryRepository.getAllBySubjectIdAndSubjectType(
+      auditableEntity.auditableSubjectId()!!,
+      auditableEntity.auditableSubjectType(),
+    )
+  }
+
   private fun differenceBetween(a: AuditableEntity? = null, b: AuditableEntity): Map<String, Any> {
     val aChanges = a?.auditableFields() ?: emptyMap()
     val bChanges = b.auditableFields()

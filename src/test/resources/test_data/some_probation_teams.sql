@@ -1,0 +1,3 @@
+insert into probation_teams (id, email_address, team_code, local_delivery_unit_mailbox_id, created_at, updated_at)
+values ('cdfce37a-9db3-4786-be9e-38b3d05bbf4b', 'probation.team1@email.com', '123', 'e33358f0-bdf9-4db6-9313-ef2d71fc4043', '2024-01-01T12:00:00', '2024-01-01T12:30:00'),
+       ('4478a4d9-b53f-4519-857c-1f85c5fc869a', 'probation.team2@email.com', 'ABC', '03173d0f-aa89-4750-a1d4-9c00ef9796b3', '2025-01-01T12:00:00', '2025-01-01T12:30:00');
