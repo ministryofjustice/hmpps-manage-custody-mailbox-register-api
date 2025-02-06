@@ -41,6 +41,8 @@ class ProbationTeamsService(
     return repository.save(existingProbationTeam)
   }
 
+  fun all(): List<ProbationTeam> = repository.findAll()
+
   private fun existingLocalDeliveryUnitMailbox(probationTeamForm: ProbationTeamForm): LocalDeliveryUnitMailbox? {
     val id = UUID.fromString(probationTeamForm.localDeliveryUnitMailboxId)
     return localDeliveryUnitMailboxService.runCatching { getMailboxById(id) }.getOrNull()
