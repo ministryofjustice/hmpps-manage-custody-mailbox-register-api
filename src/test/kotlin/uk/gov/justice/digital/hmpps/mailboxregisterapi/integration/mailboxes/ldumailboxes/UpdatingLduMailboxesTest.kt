@@ -1,47 +1,93 @@
 package uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.mailboxes.ldumailboxes
 
-import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.BeforeEach
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
+import org.springframework.test.context.jdbc.Sql
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditAction
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLogEntryRepository
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLog
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.localdeliveryunits.LocalDeliveryUnitMailboxForm
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.localdeliveryunits.LocalDeliveryUnitMailboxService
+import java.util.*
 
-private const val DUMMY_MAILBOX_ID = "8d044b2e-96b1-45ef-a2ce-cce9c6f6a0c2"
-private const val BASE_URI: String = "/local-delivery-unit-mailboxes"
-
+@Sql(
+  "classpath:test_data/reset.sql",
+  "classpath:test_data/some_ldu_mailboxes.sql",
+)
 @DisplayName("PUT /local-delivery-unit-mailboxes/:id")
 class UpdatingLduMailboxesTest : IntegrationTestBase() {
-  private lateinit var attributes: HashMap<String, String?>
 
   @Autowired
   lateinit var localDeliveryUnitMailboxService: LocalDeliveryUnitMailboxService
 
   @Autowired
-  lateinit var auditLogEntryRepository: AuditLogEntryRepository
+  lateinit var auditLog: AuditLog
 
-  @BeforeEach
-  fun setup() {
-    attributes = HashMap<String, String?>().apply {
-      put("unitCode", "UPDATED_UNIT_CODE")
-      put("areaCode", "UPDATED_AREA_CODE")
-      put("name", "Updated Mailbox Name")
-      put("emailAddress", "updated-ldu@example.com")
-      put("country", "Wales")
+  private var existingLocalDeliveryUnitMailboxId = UUID.fromString("e33358f0-bdf9-4db6-9313-ef2d71fc4043")
+  private var apiUrl = "/local-delivery-unit-mailboxes/$existingLocalDeliveryUnitMailboxId"
+
+  private var attributes = hashMapOf<String, Any?>(
+    "unitCode" to "UPDATED_UNIT_CODE",
+    "areaCode" to "UPDATED_AREA_CODE",
+    "name" to "Updated Mailbox Name",
+    "emailAddress" to "updated-ldu@example.com",
+    "country" to "Wales",
+  )
+
+  @Test
+  fun `should update the mailbox by submitting the correct details`() {
+    webTestClient.put()
+      .uri(apiUrl)
+      .headers(
+        setAuthorisation(
+          roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN"),
+          username = "dummy-username",
+        ),
+      )
+      .bodyValue(attributes)
+      .exchange()
+      .expectStatus().isOk
+
+    val updatedLocalDeliveryUnitMailbox = localDeliveryUnitMailboxService.getMailboxById(existingLocalDeliveryUnitMailboxId)
+    assertThat(updatedLocalDeliveryUnitMailbox).isNotNull
+
+    updatedLocalDeliveryUnitMailbox.apply {
+      assertThat(unitCode).isEqualTo("UPDATED_UNIT_CODE")
+      assertThat(areaCode).isEqualTo("UPDATED_AREA_CODE")
+      assertThat(name).isEqualTo("Updated Mailbox Name")
+      assertThat(emailAddress).isEqualTo("updated-ldu@example.com")
+      assertThat(country).isEqualTo("Wales")
+
+      val auditLogEntries = auditLog.entriesRegarding(this)
+      assertThat(auditLogEntries).hasSize(1)
+      assertThat(auditLogEntries.first().action).isEqualTo(AuditAction.UPDATE)
+      assertThat(auditLogEntries.first().username).isEqualTo("dummy-username")
     }
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = ["unitCode", "areaCode", "emailAddress"])
+  fun `without the required fields mailboxes are not updated`(nullFieldName: String) {
+    attributes[nullFieldName] = null
+
+    webTestClient.put()
+      .uri(apiUrl)
+      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
+      .contentType(MediaType.APPLICATION_JSON)
+      .bodyValue(attributes)
+      .exchange()
+      .expectStatus().isBadRequest
+      .expectBody().jsonPath("$.errors.$nullFieldName").isEqualTo("must not be blank")
   }
 
   @Test
   fun `should return unauthorized if no token`() {
     webTestClient.put()
-      .uri("$BASE_URI/$DUMMY_MAILBOX_ID")
+      .uri(apiUrl)
       .exchange()
       .expectStatus()
       .isUnauthorized
@@ -50,7 +96,7 @@ class UpdatingLduMailboxesTest : IntegrationTestBase() {
   @Test
   fun `should return forbidden if no role`() {
     webTestClient.put()
-      .uri("$BASE_URI/$DUMMY_MAILBOX_ID")
+      .uri(apiUrl)
       .headers(setAuthorisation())
       .bodyValue(attributes)
       .exchange()
@@ -61,75 +107,11 @@ class UpdatingLduMailboxesTest : IntegrationTestBase() {
   @Test
   fun `should return forbidden if wrong role`() {
     webTestClient.put()
-      .uri("$BASE_URI/$DUMMY_MAILBOX_ID")
+      .uri(apiUrl)
       .headers(setAuthorisation(roles = listOf("ROLE_WRONG")))
       .bodyValue(attributes)
       .exchange()
       .expectStatus()
       .isForbidden
-  }
-
-  @Test
-  fun `should update the mailbox by submitting the correct details`() {
-    val newMailbox = LocalDeliveryUnitMailboxForm(
-      unitCode = "UNIT_CODE",
-      areaCode = "AREA_CODE",
-      name = "Mailbox Name",
-      emailAddress = "ldu@example.com",
-      country = "England",
-    )
-    val mailboxId = localDeliveryUnitMailboxService.createMailbox(newMailbox).id
-    Assertions.assertThat(mailboxId).isNotNull
-
-    if (mailboxId != null) {
-      webTestClient.put()
-        .uri("$BASE_URI/$mailboxId")
-        .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
-        .bodyValue(attributes)
-        .exchange()
-        .expectStatus().isOk
-
-      localDeliveryUnitMailboxService.getMailboxById(mailboxId).apply {
-        Assertions.assertThat(unitCode).isEqualTo("UPDATED_UNIT_CODE")
-        Assertions.assertThat(areaCode).isEqualTo("UPDATED_AREA_CODE")
-        Assertions.assertThat(name).isEqualTo("Updated Mailbox Name")
-        Assertions.assertThat(emailAddress).isEqualTo("updated-ldu@example.com")
-        Assertions.assertThat(country).isEqualTo("Wales")
-      }
-
-      val auditLogEntry = auditLogEntryRepository.findBySubjectId(mailboxId)
-      Assertions.assertThat(auditLogEntry).isNotNull
-      auditLogEntry?.apply {
-        Assertions.assertThat(subjectType).isEqualTo("LocalDeliveryUnitMailbox")
-        Assertions.assertThat(action).isEqualTo(AuditAction.UPDATE)
-      }
-    }
-  }
-
-  @ParameterizedTest
-  @ValueSource(strings = ["unitCode", "areaCode", "emailAddress"])
-  fun `without the required fields mailboxes are not updated`(nullFieldName: String) {
-    val invalidAttributes = attributes.toMutableMap().apply {
-      this[nullFieldName] = null
-    }
-
-    val newMailbox = LocalDeliveryUnitMailboxForm(
-      unitCode = "UNIT_CODE",
-      areaCode = "AREA_CODE",
-      name = "Mailbox Name",
-      emailAddress = "ldu@example.com",
-      country = "England",
-    )
-    val mailboxId = localDeliveryUnitMailboxService.createMailbox(newMailbox).id
-    Assertions.assertThat(mailboxId).isNotNull
-
-    webTestClient.put()
-      .uri("$BASE_URI/$mailboxId")
-      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
-      .contentType(MediaType.APPLICATION_JSON)
-      .bodyValue(invalidAttributes)
-      .exchange()
-      .expectStatus().isBadRequest
-      .expectBody().jsonPath("$.errors.$nullFieldName").isEqualTo("must not be blank")
   }
 }
