@@ -114,4 +114,31 @@ class ProbationTeamsController(
     ],
   )
   fun list() = probationTeamsService.all()
+
+  @GetMapping(value = ["/{id}"])
+  @ResponseStatus(code = HttpStatus.OK)
+  @Operation(
+    summary = "Gets a probation team by ID",
+    description = "Gets a probation team by ID",
+    security = [SecurityRequirement(name = "mailbox-register-api-ui-role")],
+    responses = [
+      ApiResponse(responseCode = "200", description = "The requested probation team"),
+      ApiResponse(
+        responseCode = "401",
+        description = "Unauthorized access to this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+      ApiResponse(
+        responseCode = "403",
+        description = "Forbidden access to this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+      ApiResponse(
+        responseCode = "404",
+        description = "The local delivery unit mailbox was not found",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+    ],
+  )
+  fun getById(@PathVariable(name = "id") id: UUID) = probationTeamsService.byId(id)
 }
