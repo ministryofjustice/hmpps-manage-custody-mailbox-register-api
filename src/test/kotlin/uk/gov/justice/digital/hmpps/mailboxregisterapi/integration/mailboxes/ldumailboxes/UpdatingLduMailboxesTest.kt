@@ -14,8 +14,6 @@ import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTe
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.localdeliveryunits.LocalDeliveryUnitMailboxService
 import java.util.*
 
-private const val BASE_URI: String = "/local-delivery-unit-mailboxes"
-
 @Sql(
   "classpath:test_data/reset.sql",
   "classpath:test_data/some_ldu_mailboxes.sql",

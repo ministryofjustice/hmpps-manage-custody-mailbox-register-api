@@ -13,6 +13,25 @@ private const val BASE_URI: String = "/local-delivery-unit-mailboxes"
 @DisplayName("GET /local-delivery-unit-mailboxes")
 class ListingLduMailboxesTest : IntegrationTestBase() {
 
+  @Sql(
+    "classpath:test_data/reset.sql",
+    "classpath:test_data/some_ldu_mailboxes.sql",
+  )
+  @Test
+  fun `should return a list of existing mailboxes sorted by createdAt ASC`() {
+    val mailboxes = webTestClient.get()
+      .uri(BASE_URI)
+      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
+      .exchange()
+      .expectStatus().isOk
+      .expectBody(object : ParameterizedTypeReference<List<LocalDeliveryUnitMailbox>>() {})
+      .returnResult().responseBody!!
+
+    Assertions.assertThat(mailboxes).hasSize(2)
+    Assertions.assertThat(mailboxes[0].unitCode).isEqualTo("UNIT_CODE_1")
+    Assertions.assertThat(mailboxes[1].unitCode).isEqualTo("UNIT_CODE_2")
+  }
+
   @Test
   fun `should return unauthorized if no token`() {
     webTestClient.get()
@@ -40,24 +59,5 @@ class ListingLduMailboxesTest : IntegrationTestBase() {
       .exchange()
       .expectStatus()
       .isForbidden
-  }
-
-  @Sql(
-    "classpath:test_data/reset.sql",
-    "classpath:test_data/some_ldu_mailboxes.sql",
-  )
-  @Test
-  fun `should return a list of existing mailboxes sorted by createdAt ASC`() {
-    val mailboxes = webTestClient.get()
-      .uri(BASE_URI)
-      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
-      .exchange()
-      .expectStatus().isOk
-      .expectBody(object : ParameterizedTypeReference<List<LocalDeliveryUnitMailbox>>() {})
-      .returnResult().responseBody!!
-
-    Assertions.assertThat(mailboxes).hasSize(2)
-    Assertions.assertThat(mailboxes[0].unitCode).isEqualTo("UNIT_CODE_1")
-    Assertions.assertThat(mailboxes[1].unitCode).isEqualTo("UNIT_CODE_2")
   }
 }
