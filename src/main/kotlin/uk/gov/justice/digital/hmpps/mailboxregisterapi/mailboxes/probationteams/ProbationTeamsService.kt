@@ -43,6 +43,8 @@ class ProbationTeamsService(
 
   fun all(): List<ProbationTeam> = repository.findAll()
 
+  fun deleteById(id: UUID) = repository.deleteById(id)
+
   private fun existingLocalDeliveryUnitMailbox(probationTeamForm: ProbationTeamForm): LocalDeliveryUnitMailbox? {
     val id = UUID.fromString(probationTeamForm.localDeliveryUnitMailboxId)
     return localDeliveryUnitMailboxService.runCatching { getMailboxById(id) }.getOrNull()
