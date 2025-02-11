@@ -21,13 +21,11 @@ class ProbationTeamForm(
   @field:NotNull(message = "must not be blank")
   val localDeliveryUnitMailboxId: String? = "",
 ) {
-  fun asEntity(): ProbationTeam {
-    return ProbationTeam(
-      teamCode = teamCode,
-      emailAddress = emailAddress,
-      localDeliveryUnitMailbox = LocalDeliveryUnitMailbox(
-        id = UUID.fromString(localDeliveryUnitMailboxId),
-      ),
-    )
-  }
+  fun asEntity(): ProbationTeam = ProbationTeam(
+    teamCode = teamCode,
+    emailAddress = emailAddress,
+    localDeliveryUnitMailbox = LocalDeliveryUnitMailbox(
+      id = UUID.fromString(localDeliveryUnitMailboxId),
+    ),
+  )
 }

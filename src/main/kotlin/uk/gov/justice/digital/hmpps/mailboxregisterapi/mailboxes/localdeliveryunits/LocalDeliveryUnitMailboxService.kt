@@ -12,19 +12,13 @@ class LocalDeliveryUnitMailboxService(
   private val repository: LocalDeliveryUnitMailboxRepository,
 ) {
   @Transactional
-  fun createMailbox(newMailbox: LocalDeliveryUnitMailboxForm): LocalDeliveryUnitMailbox {
-    return repository.saveAndFlush(newMailbox.asEntity())
-  }
+  fun createMailbox(newMailbox: LocalDeliveryUnitMailboxForm): LocalDeliveryUnitMailbox = repository.saveAndFlush(newMailbox.asEntity())
 
   @Transactional
-  fun getMailboxById(id: UUID): LocalDeliveryUnitMailbox {
-    return repository.findById(id).orElseThrow { NoResourceFoundException(HttpMethod.GET, id.toString()) }
-  }
+  fun getMailboxById(id: UUID): LocalDeliveryUnitMailbox = repository.findById(id).orElseThrow { NoResourceFoundException(HttpMethod.GET, id.toString()) }
 
   @Transactional
-  fun listMailboxes(): List<LocalDeliveryUnitMailbox> {
-    return repository.findAll(Sort.by(Sort.Direction.ASC, LocalDeliveryUnitMailbox::createdAt.name))
-  }
+  fun listMailboxes(): List<LocalDeliveryUnitMailbox> = repository.findAll(Sort.by(Sort.Direction.ASC, LocalDeliveryUnitMailbox::createdAt.name))
 
   @Transactional
   fun updateMailbox(id: UUID, mailbox: LocalDeliveryUnitMailboxForm): LocalDeliveryUnitMailbox {

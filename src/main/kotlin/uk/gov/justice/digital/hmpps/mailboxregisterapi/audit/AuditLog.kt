@@ -9,17 +9,15 @@ class AuditLog(
   private val auditLogEntryRepository: AuditLogEntryRepository,
 ) {
   @Transactional
-  fun logCreationOf(auditableEntity: AuditableEntity, givenUsername: String? = null): AuditLogEntry {
-    return auditLogEntryRepository.saveAndFlush(
-      AuditLogEntry(
-        action = AuditAction.CREATE,
-        subjectId = auditableEntity.auditableSubjectId(),
-        subjectType = auditableEntity.auditableSubjectType(),
-        username = username(givenUsername),
-        updates = differenceBetween(null, auditableEntity),
-      ),
-    )
-  }
+  fun logCreationOf(auditableEntity: AuditableEntity, givenUsername: String? = null): AuditLogEntry = auditLogEntryRepository.saveAndFlush(
+    AuditLogEntry(
+      action = AuditAction.CREATE,
+      subjectId = auditableEntity.auditableSubjectId(),
+      subjectType = auditableEntity.auditableSubjectType(),
+      username = username(givenUsername),
+      updates = differenceBetween(null, auditableEntity),
+    ),
+  )
 
   @Transactional
   fun logUpdatesTo(
@@ -51,12 +49,10 @@ class AuditLog(
     )
   }
 
-  fun entriesRegarding(auditableEntity: AuditableEntity): List<AuditLogEntry> {
-    return auditLogEntryRepository.getAllBySubjectIdAndSubjectType(
-      auditableEntity.auditableSubjectId()!!,
-      auditableEntity.auditableSubjectType(),
-    )
-  }
+  fun entriesRegarding(auditableEntity: AuditableEntity): List<AuditLogEntry> = auditLogEntryRepository.getAllBySubjectIdAndSubjectType(
+    auditableEntity.auditableSubjectId()!!,
+    auditableEntity.auditableSubjectType(),
+  )
 
   private fun differenceBetween(a: AuditableEntity? = null, b: AuditableEntity): Map<String, Any> {
     val aChanges = a?.auditableFields() ?: emptyMap()
@@ -67,9 +63,7 @@ class AuditLog(
       .filterValues { it.isNotEmpty() }
   }
 
-  private fun changedPair(a: Any?, b: Any?): List<Any?> =
-    if (a == b) emptyList() else listOf(a, b)
+  private fun changedPair(a: Any?, b: Any?): List<Any?> = if (a == b) emptyList() else listOf(a, b)
 
-  private fun username(givenUsername: String? = null) =
-    givenUsername ?: SecurityContextHolder.getContext().authentication.principal as String
+  private fun username(givenUsername: String? = null) = givenUsername ?: SecurityContextHolder.getContext().authentication.principal as String
 }

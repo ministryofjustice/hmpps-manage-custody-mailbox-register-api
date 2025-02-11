@@ -43,12 +43,11 @@ class LocalDeliveryUnitMailbox(
 ) : AuditableEntity {
   override fun auditableSubjectId(): UUID? = id
   override fun auditableSubjectType(): String = "LocalDeliveryUnitMailbox"
-  override fun auditableFields(): Map<String, Any?> =
-    mapOf(
-      "emailAddress" to emailAddress,
-      "unitCode" to unitCode,
-      "areaCode" to areaCode,
-      "country" to country,
-      "name" to name,
-    )
+  override fun auditableFields(): Map<String, Any?> = mapOf(
+    "emailAddress" to emailAddress,
+    "unitCode" to unitCode,
+    "areaCode" to areaCode,
+    "country" to country,
+    "name" to name,
+  )
 }

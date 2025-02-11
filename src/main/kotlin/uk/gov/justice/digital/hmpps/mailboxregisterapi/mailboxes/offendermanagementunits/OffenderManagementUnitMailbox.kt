@@ -45,11 +45,10 @@ class OffenderManagementUnitMailbox(
 ) : AuditableEntity {
   override fun auditableSubjectId(): UUID? = id
   override fun auditableSubjectType(): String = "OffenderManagementUnitMailbox"
-  override fun auditableFields(): Map<String, Any?> =
-    mapOf(
-      "emailAddress" to emailAddress,
-      "name" to name,
-      "prisonCode" to prisonCode.toString(),
-      "role" to role.toString(),
-    )
+  override fun auditableFields(): Map<String, Any?> = mapOf(
+    "emailAddress" to emailAddress,
+    "name" to name,
+    "prisonCode" to prisonCode.toString(),
+    "role" to role.toString(),
+  )
 }
