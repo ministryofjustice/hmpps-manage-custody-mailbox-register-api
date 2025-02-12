@@ -24,12 +24,10 @@ class OffenderManagementUnitMailboxForm(
   @field:NotNull(message = "must not be blank")
   var role: OffenderManagementUnitRole? = null,
 ) {
-  fun asEntity(): OffenderManagementUnitMailbox {
-    return OffenderManagementUnitMailbox(
-      emailAddress = emailAddress,
-      name = name,
-      prisonCode = prisonCode,
-      role = role,
-    )
-  }
+  fun asEntity(): OffenderManagementUnitMailbox = OffenderManagementUnitMailbox(
+    emailAddress = emailAddress,
+    name = name,
+    prisonCode = prisonCode,
+    role = role,
+  )
 }

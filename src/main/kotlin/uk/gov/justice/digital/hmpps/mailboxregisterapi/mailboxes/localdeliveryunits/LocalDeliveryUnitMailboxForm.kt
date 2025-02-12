@@ -25,13 +25,11 @@ class LocalDeliveryUnitMailboxForm(
   @Schema(description = "A name to help recognise the LDU", example = "Carlisle")
   var name: String? = null,
 ) {
-  fun asEntity(): LocalDeliveryUnitMailbox {
-    return LocalDeliveryUnitMailbox(
-      unitCode = unitCode,
-      areaCode = areaCode,
-      emailAddress = emailAddress,
-      country = country,
-      name = name,
-    )
-  }
+  fun asEntity(): LocalDeliveryUnitMailbox = LocalDeliveryUnitMailbox(
+    unitCode = unitCode,
+    areaCode = areaCode,
+    emailAddress = emailAddress,
+    country = country,
+    name = name,
+  )
 }

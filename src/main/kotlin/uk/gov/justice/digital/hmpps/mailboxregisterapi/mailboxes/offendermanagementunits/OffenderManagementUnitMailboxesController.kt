@@ -54,9 +54,8 @@ class OffenderManagementUnitMailboxesController(
       ),
     ],
   )
-  fun create(@Valid @RequestBody newMailbox: OffenderManagementUnitMailboxForm) =
-    offenderManagementUnitMailboxService.createMailbox(newMailbox)
-      .also { auditLog.logCreationOf(it) }
+  fun create(@Valid @RequestBody newMailbox: OffenderManagementUnitMailboxForm) = offenderManagementUnitMailboxService.createMailbox(newMailbox)
+    .also { auditLog.logCreationOf(it) }
 
   @GetMapping(value = [""])
   @ResponseStatus(code = HttpStatus.OK)
@@ -137,11 +136,10 @@ class OffenderManagementUnitMailboxesController(
       ),
     ],
   )
-  fun update(@PathVariable(name = "id") id: UUID, @Valid @RequestBody mailbox: OffenderManagementUnitMailboxForm) =
-    auditLog.logUpdatesTo(
-      offenderManagementUnitMailboxService.getMailboxById(id),
-      offenderManagementUnitMailboxService.updateMailbox(id, mailbox),
-    )
+  fun update(@PathVariable(name = "id") id: UUID, @Valid @RequestBody mailbox: OffenderManagementUnitMailboxForm) = auditLog.logUpdatesTo(
+    offenderManagementUnitMailboxService.getMailboxById(id),
+    offenderManagementUnitMailboxService.updateMailbox(id, mailbox),
+  )
 
   @DeleteMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
@@ -168,8 +166,7 @@ class OffenderManagementUnitMailboxesController(
       ),
     ],
   )
-  fun delete(@PathVariable(name = "id") id: UUID) =
-    offenderManagementUnitMailboxService.deleteMailbox(id).also {
-      auditLog.logDeletionOf(OffenderManagementUnitMailbox(id = id))
-    }
+  fun delete(@PathVariable(name = "id") id: UUID) = offenderManagementUnitMailboxService.deleteMailbox(id).also {
+    auditLog.logDeletionOf(OffenderManagementUnitMailbox(id = id))
+  }
 }

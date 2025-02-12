@@ -54,9 +54,8 @@ class LocalDeliveryUnitMailboxesController(
       ),
     ],
   )
-  fun create(@Valid @RequestBody newMailbox: LocalDeliveryUnitMailboxForm) =
-    localDeliveryUnitMailboxService.createMailbox(newMailbox)
-      .also { auditLog.logCreationOf(it) }
+  fun create(@Valid @RequestBody newMailbox: LocalDeliveryUnitMailboxForm) = localDeliveryUnitMailboxService.createMailbox(newMailbox)
+    .also { auditLog.logCreationOf(it) }
 
   @GetMapping(value = [""])
   @ResponseStatus(code = HttpStatus.OK)
@@ -137,11 +136,10 @@ class LocalDeliveryUnitMailboxesController(
       ),
     ],
   )
-  fun update(@PathVariable(name = "id") id: UUID, @Valid @RequestBody mailbox: LocalDeliveryUnitMailboxForm) =
-    auditLog.logUpdatesTo(
-      localDeliveryUnitMailboxService.getMailboxById(id),
-      localDeliveryUnitMailboxService.updateMailbox(id, mailbox),
-    )
+  fun update(@PathVariable(name = "id") id: UUID, @Valid @RequestBody mailbox: LocalDeliveryUnitMailboxForm) = auditLog.logUpdatesTo(
+    localDeliveryUnitMailboxService.getMailboxById(id),
+    localDeliveryUnitMailboxService.updateMailbox(id, mailbox),
+  )
 
   @DeleteMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
@@ -168,8 +166,7 @@ class LocalDeliveryUnitMailboxesController(
       ),
     ],
   )
-  fun delete(@PathVariable(name = "id") id: UUID) =
-    localDeliveryUnitMailboxService.deleteMailbox(id).also {
-      auditLog.logDeletionOf(LocalDeliveryUnitMailbox(id = id))
-    }
+  fun delete(@PathVariable(name = "id") id: UUID) = localDeliveryUnitMailboxService.deleteMailbox(id).also {
+    auditLog.logDeletionOf(LocalDeliveryUnitMailbox(id = id))
+  }
 }

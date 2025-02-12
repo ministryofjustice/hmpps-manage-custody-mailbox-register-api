@@ -54,9 +54,8 @@ class ProbationTeamsController(
       ),
     ],
   )
-  fun create(@Valid @RequestBody probationTeamForm: ProbationTeamForm) =
-    probationTeamsService.createProbationTeam(probationTeamForm)
-      .also { auditLog.logCreationOf(it) }
+  fun create(@Valid @RequestBody probationTeamForm: ProbationTeamForm) = probationTeamsService.createProbationTeam(probationTeamForm)
+    .also { auditLog.logCreationOf(it) }
 
   @PutMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
@@ -88,11 +87,10 @@ class ProbationTeamsController(
       ),
     ],
   )
-  fun update(@PathVariable(name = "id") id: UUID, @Valid @RequestBody probationTeamForm: ProbationTeamForm) =
-    auditLog.logUpdatesTo(
-      probationTeamsService.byId(id),
-      probationTeamsService.updateProbationTeam(id, probationTeamForm),
-    )
+  fun update(@PathVariable(name = "id") id: UUID, @Valid @RequestBody probationTeamForm: ProbationTeamForm) = auditLog.logUpdatesTo(
+    probationTeamsService.byId(id),
+    probationTeamsService.updateProbationTeam(id, probationTeamForm),
+  )
 
   @GetMapping(value = [""])
   @ResponseStatus(code = HttpStatus.OK)
@@ -168,7 +166,6 @@ class ProbationTeamsController(
       ),
     ],
   )
-  fun delete(@PathVariable(name = "id") id: UUID) =
-    probationTeamsService.deleteById(id)
-      .also { auditLog.logDeletionOf(ProbationTeam(id = id)) }
+  fun delete(@PathVariable(name = "id") id: UUID) = probationTeamsService.deleteById(id)
+    .also { auditLog.logDeletionOf(ProbationTeam(id = id)) }
 }

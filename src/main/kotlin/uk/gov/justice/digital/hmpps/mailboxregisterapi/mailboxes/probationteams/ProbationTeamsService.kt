@@ -21,9 +21,7 @@ class ProbationTeamsService(
     return repository.saveAndFlush(probationTeamForm.asEntity())
   }
 
-  fun byId(id: UUID): ProbationTeam {
-    return repository.findById(id).orElseThrow { NoResourceFoundException(HttpMethod.GET, id.toString()) }
-  }
+  fun byId(id: UUID): ProbationTeam = repository.findById(id).orElseThrow { NoResourceFoundException(HttpMethod.GET, id.toString()) }
 
   fun updateProbationTeam(id: UUID, probationTeamForm: ProbationTeamForm): ProbationTeam {
     if (existingLocalDeliveryUnitMailbox(probationTeamForm) == null) {
