@@ -76,6 +76,7 @@ enum class PrisonCode(val prisonName: String) {
   LYI("Leyhill (HMP)"),
   MDI("Moorland (HMP/YOI)"),
   MHI("Morton Hall (HMP)"),
+  MKI("Millsike (HMP)"),
   MRI("Manchester (HMP)"),
   MSI("Maidstone (HMP)"),
   MTI("The Mount (HMP)"),
