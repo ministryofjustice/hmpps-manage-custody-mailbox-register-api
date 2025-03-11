@@ -18,6 +18,9 @@ generic-service:
   ingress:
     enabled: true
     tlsSecretName: hmpps-manage-custody-mailbox-register-api-cert
+    modsecurity_enabled: true
+    modsecurity_audit_enabled: true
+    modsecurity_github_team: mailbox-register-devs
 
   # https://github.com/ministryofjustice/hmpps-ip-allowlists/blob/main/ip-allowlist-groups.yaml
   allowlist:
