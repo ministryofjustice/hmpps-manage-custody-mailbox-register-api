@@ -19,8 +19,18 @@ generic-service:
     enabled: true
     tlsSecretName: hmpps-manage-custody-mailbox-register-api-cert
     modsecurity_enabled: true
-    modsecurity_audit_enabled: true
-    modsecurity_github_team: mailbox-register-devs
+    modsecurity_snippet: |
+      SecRuleEngine On
+      SecDefaultAction "phase:2,pass,log,tag:github_team=mailbox-register-devs,tag:namespace={{ .Release.Namespace }}"
+      # Default is only GET HEAD POST OPTIONS so need to include PUT etc.
+      SecAction "id:900200,phase:1,nolog,pass,t:none,setvar:tx.allowed_methods=GET HEAD POST OPTIONS PUT DELETE,setvar:tx.paranoia_level=3"
+      # Change default denial to be a 406 so that we can tell easily that it is modsecurity doing the blocking
+      SecRuleUpdateActionById 949110 "t:none,deny,status:406,logdata:%{SERVER_NAME}"
+      SecRuleUpdateActionById 959100 "t:none,deny,status:406,logdata:%{SERVER_NAME}"
+      # Request Missing an Accept Header
+      SecRuleRemoveById 920300
+      # Request Missing User Agent Header
+      SecRuleRemoveById 920320
 
   # https://github.com/ministryofjustice/hmpps-ip-allowlists/blob/main/ip-allowlist-groups.yaml
   allowlist:
