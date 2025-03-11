@@ -58,16 +58,13 @@ generic-service:
   #   [name of kubernetes secret]:
   #     [name of environment variable as seen by app]: [key of kubernetes secret to load]
   namespace_secrets:
-    application-insights:
+    hmpps-manage-custody-mailbox-register-api-application-insights:
       APPLICATIONINSIGHTS_CONNECTION_STRING: "APPLICATIONINSIGHTS_CONNECTION_STRING"
     rds-instance-output:
       DB_NAME: "database_name"
       DB_PASS: "database_password"
       DB_USER: "database_username"
       DB_SERVER: "rds_instance_address"
-    hmpps-auth:
-      CLIENT_CREDS_CLIENT_ID: 'CLIENT_CREDS_CLIENT_ID'
-      CLIENT_CREDS_CLIENT_SECRET: 'CLIENT_CREDS_CLIENT_SECRET'
 
 generic-prometheus-alerts:
   targetApplication: hmpps-manage-custody-mailbox-register-api
