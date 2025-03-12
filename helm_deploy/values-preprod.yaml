@@ -3,16 +3,16 @@
 
 generic-service:
   ingress:
-    host: manage-custody-mailbox-register-api-dev.hmpps.service.justice.gov.uk
+    host: manage-custody-mailbox-register-api-preprod.hmpps.service.justice.gov.uk
 
   env:
     APPLICATIONINSIGHTS_CONFIGURATION_FILE: "applicationinsights.dev.json"
-    HMPPS_AUTH_URL: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth"
+    HMPPS_AUTH_URL: "https://sign-in-preprod.hmpps.service.justice.gov.uk/auth"
 
 # CloudPlatform AlertManager receiver to route prometheus alerts to slack
 # See https://user-guide.cloud-platform.service.justice.gov.uk/documentation/monitoring-an-app/how-to-create-alarms.html#creating-your-own-custom-alerts
 generic-prometheus-alerts:
   businessHoursOnly: true
-  alertSeverity: mpc-alerts-nonprod-dev
+  alertSeverity: mpc-alerts-nonprod-preprod
   rdsAlertsDatabases:
-    cloud-platform-124557911c60622b: dev
+    cloud-platform-9f16795d174dbfcd: preprod

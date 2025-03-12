@@ -2,7 +2,7 @@
 
 [![repo standards badge](https://img.shields.io/badge/endpoint.svg?&style=flat&logo=github&url=https%3A%2F%2Foperations-engineering-reports.cloud-platform.service.justice.gov.uk%2Fapi%2Fv1%2Fcompliant_public_repositories%2Fhmpps-manage-custody-mailbox-register-api)](https://operations-engineering-reports.cloud-platform.service.justice.gov.uk/public-report/hmpps-manage-custody-mailbox-register-api "Link to report")
 [![Docker Repository on ghcr](https://img.shields.io/badge/ghcr.io-repository-2496ED.svg?logo=docker)](https://ghcr.io/ministryofjustice/hmpps-manage-custody-mailbox-register-api)
-[![API docs](https://img.shields.io/badge/API_docs_-view-85EA2D.svg?logo=swagger)](https://hmpps-manage-custody-mailbox-register-api-dev.hmpps.service.justice.gov.uk/webjars/swagger-ui/index.html?configUrl=/v3/api-docs)
+[![API docs](https://img.shields.io/badge/API_docs_-view-85EA2D.svg?logo=swagger)](https://manage-custody-mailbox-register-api-dev.hmpps.service.justice.gov.uk/swagger-ui/index.html)
 
 A centralised functional mailbox registry providing email addresses for probation and prisons. The service would act 
 as a source of truth for functional mailbox email addresses that services across HMPPS can use.
@@ -35,4 +35,11 @@ in Intellij.
 
 ```
 ./gradlew check
+```
+
+## Linting the code
+
+```
+./gradlew ktlintCheck
+./gradlew ktlintFormat
 ```

@@ -68,4 +68,3 @@ generic-service:
 
 generic-prometheus-alerts:
   targetApplication: hmpps-manage-custody-mailbox-register-api
-  alertSeverity: moic
