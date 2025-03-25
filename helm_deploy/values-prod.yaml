@@ -10,6 +10,7 @@ generic-service:
 
   postgresDatabaseRestore:
     enabled: true
+    jobName: "hmpps-manage-custody-mailbox-register-db-refresh"
     namespace_secrets:
       rds-instance-output:
         DB_NAME: "database_name"
