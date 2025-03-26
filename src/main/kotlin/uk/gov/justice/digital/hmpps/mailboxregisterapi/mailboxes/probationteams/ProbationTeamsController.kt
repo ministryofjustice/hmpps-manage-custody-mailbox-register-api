@@ -17,24 +17,26 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.HAS_READ_MAILBOXES
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.HAS_SYSTEM_ADMIN
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLog
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 import java.util.*
 
 @RestController
-@PreAuthorize("hasRole('MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN')")
 @RequestMapping(value = ["/probation-teams"], produces = ["application/json"])
 class ProbationTeamsController(
   private val probationTeamsService: ProbationTeamsService,
   private val auditLog: AuditLog,
 ) {
+  @PreAuthorize(HAS_SYSTEM_ADMIN)
   @PostMapping(value = [""])
   @ResponseStatus(code = HttpStatus.CREATED)
   @Operation(
     summary = "Creates a new local delivery unit mailbox",
     description = "Creates a new local delivery unit mailbox",
-    security = [SecurityRequirement(name = "mailbox-register-api-ui-role")],
+    security = [SecurityRequirement(name = "system-admin-role")],
     responses = [
       ApiResponse(responseCode = "201", description = "The local delivery unit mailbox was created"),
       ApiResponse(
@@ -57,12 +59,13 @@ class ProbationTeamsController(
   fun create(@Valid @RequestBody probationTeamForm: ProbationTeamForm) = probationTeamsService.createProbationTeam(probationTeamForm)
     .also { auditLog.logCreationOf(it) }
 
+  @PreAuthorize(HAS_SYSTEM_ADMIN)
   @PutMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
     summary = "Updates a local delivery unit mailbox",
     description = "Updates a local delivery unit mailbox",
-    security = [SecurityRequirement(name = "mailbox-register-api-ui-role")],
+    security = [SecurityRequirement(name = "system-admin-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "The local delivery unit mailbox was updated"),
       ApiResponse(
@@ -92,12 +95,13 @@ class ProbationTeamsController(
     probationTeamsService.updateProbationTeam(id, probationTeamForm),
   )
 
+  @PreAuthorize(HAS_READ_MAILBOXES)
   @GetMapping(value = [""])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
     summary = "Lists all the probation teams",
     description = "Lists all the probation teams",
-    security = [SecurityRequirement(name = "mailbox-register-api-ui-role")],
+    security = [SecurityRequirement(name = "system-admin-role"), SecurityRequirement(name = "mailboxes-ro-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "A list of probation teams"),
       ApiResponse(
@@ -114,12 +118,13 @@ class ProbationTeamsController(
   )
   fun list() = probationTeamsService.all()
 
+  @PreAuthorize(HAS_READ_MAILBOXES)
   @GetMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
     summary = "Gets a probation team by ID",
     description = "Gets a probation team by ID",
-    security = [SecurityRequirement(name = "mailbox-register-api-ui-role")],
+    security = [SecurityRequirement(name = "system-admin-role"), SecurityRequirement(name = "mailboxes-ro-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "The requested probation team"),
       ApiResponse(
@@ -141,12 +146,13 @@ class ProbationTeamsController(
   )
   fun getById(@PathVariable(name = "id") id: UUID) = probationTeamsService.byId(id)
 
+  @PreAuthorize(HAS_SYSTEM_ADMIN)
   @DeleteMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
     summary = "Deletes a specified probation team",
     description = "Deletes a specified probation team",
-    security = [SecurityRequirement(name = "mailbox-register-api-ui-role")],
+    security = [SecurityRequirement(name = "system-admin-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "The specified probation team was deleted"),
       ApiResponse(

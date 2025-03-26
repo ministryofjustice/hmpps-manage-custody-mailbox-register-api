@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.test.context.jdbc.Sql
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_MAILBOXES_RO
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_ADMIN
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.localdeliveryunits.LocalDeliveryUnitMailbox
 
@@ -21,7 +23,7 @@ class ListingLduMailboxesTest : IntegrationTestBase() {
   fun `should return a list of existing mailboxes sorted by createdAt ASC`() {
     val mailboxes = webTestClient.get()
       .uri(BASE_URI)
-      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_ADMIN, ROLE_MAILBOXES_RO)))
       .exchange()
       .expectStatus().isOk
       .expectBody(object : ParameterizedTypeReference<List<LocalDeliveryUnitMailbox>>() {})

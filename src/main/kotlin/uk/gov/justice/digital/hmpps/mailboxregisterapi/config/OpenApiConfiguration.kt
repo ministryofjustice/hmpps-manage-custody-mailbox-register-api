@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.info.BuildProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_MAILBOXES_RO
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_ADMIN
 
 @Configuration
 class OpenApiConfiguration(buildProperties: BuildProperties) {
@@ -39,11 +41,16 @@ class OpenApiConfiguration(buildProperties: BuildProperties) {
     )
     .components(
       Components().addSecuritySchemes(
-        "mailbox-register-api-ui-role",
-        SecurityScheme().addBearerJwtRequirement("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN"),
+        "system-admin-role",
+        SecurityScheme().addBearerJwtRequirement(ROLE_SYSTEM_ADMIN),
+      ).addSecuritySchemes(
+        "mailboxes-ro-role",
+        SecurityScheme().addBearerJwtRequirement(ROLE_MAILBOXES_RO),
       ),
     )
-    .addSecurityItem(SecurityRequirement().addList("mailbox-register-api-ui-role", listOf("read", "write")))
+    .addSecurityItem(
+      SecurityRequirement().addList("system-admin-role", listOf("read", "write")).addList("mailboxes-ro-role", listOf("read")),
+    )
 }
 
 private fun SecurityScheme.addBearerJwtRequirement(role: String): SecurityScheme = type(SecurityScheme.Type.HTTP)

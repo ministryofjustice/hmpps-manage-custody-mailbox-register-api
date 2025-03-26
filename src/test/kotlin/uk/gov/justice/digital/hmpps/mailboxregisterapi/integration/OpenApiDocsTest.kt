@@ -83,8 +83,13 @@ class OpenApiDocsTest : IntegrationTestBase() {
   }
 
   @ParameterizedTest
-  @CsvSource(value = ["mailbox-register-api-ui-role, MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN"])
-  fun `the security scheme is setup for bearer tokens`(key: String, role: String) {
+  @CsvSource(
+    value = [
+      "system-admin-role, MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN, read+write",
+      "mailboxes-ro-role, ROLE_MANAGE_CUSTODY_MAILBOX_REGISTER__MAILBOXES__RO, read",
+    ],
+  )
+  fun `the security scheme is setup for bearer tokens`(key: String, role: String, operations: String) {
     webTestClient.get()
       .uri("/v3/api-docs")
       .accept(MediaType.APPLICATION_JSON)
@@ -99,8 +104,7 @@ class OpenApiDocsTest : IntegrationTestBase() {
       .jsonPath("$.components.securitySchemes.$key.bearerFormat").isEqualTo("JWT")
       .jsonPath("$.security[0].$key").isEqualTo(
         JSONArray().apply {
-          this.add("read")
-          this.add("write")
+          operations.split("+").forEach { this.add(it) }
         },
       )
   }

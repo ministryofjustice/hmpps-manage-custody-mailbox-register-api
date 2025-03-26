@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.jdbc.Sql
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_ADMIN
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditAction
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLogEntryRepository
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
@@ -55,7 +56,7 @@ class DeletingOmuMailboxesTest : IntegrationTestBase() {
   fun `should return not found if mailbox does not exist`() {
     webTestClient.delete()
       .uri("$BASE_URI/$DUMMY_MAILBOX_ID")
-      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_ADMIN)))
       .exchange()
       .expectStatus()
       .isNotFound
@@ -72,7 +73,7 @@ class DeletingOmuMailboxesTest : IntegrationTestBase() {
 
     webTestClient.delete()
       .uri("$BASE_URI/$mailboxId")
-      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_ADMIN)))
       .exchange()
       .expectStatus()
       .isOk
