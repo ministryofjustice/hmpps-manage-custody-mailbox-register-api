@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.context.jdbc.Sql
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.PrisonCode
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_USER
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditAction
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLogEntryRepository
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
@@ -78,7 +79,7 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
 
     webTestClient.post()
       .uri(BASE_URI)
-      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER)))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(attributes)
       .exchange()
@@ -97,7 +98,7 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
 
     webTestClient.post()
       .uri(BASE_URI)
-      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER)))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(invalidAttributes)
       .exchange()
@@ -111,7 +112,7 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
   fun `are created by submitting the correct details`() {
     webTestClient.post()
       .uri(BASE_URI)
-      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER)))
       .bodyValue(attributes)
       .exchange()
       .expectStatus().isCreated
@@ -130,7 +131,7 @@ class CreatingOmuMailboxesTest : IntegrationTestBase() {
   fun `creation is audit logged`() {
     webTestClient.post()
       .uri(BASE_URI)
-      .headers(setAuthorisation(username = "mailboxUser", roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(username = "mailboxUser", roles = listOf(ROLE_SYSTEM_USER)))
       .bodyValue(attributes)
       .exchange()
       .expectStatus().isCreated

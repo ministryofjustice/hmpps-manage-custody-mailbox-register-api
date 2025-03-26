@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.PrisonCode
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_USER
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditAction
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLogEntryRepository
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
@@ -84,7 +85,7 @@ class UpdatingOmuMailboxesTest : IntegrationTestBase() {
     if (mailboxId != null) {
       webTestClient.put()
         .uri("$BASE_URI/$mailboxId")
-        .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
+        .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER)))
         .bodyValue(attributes)
         .exchange()
         .expectStatus().isOk
@@ -123,7 +124,7 @@ class UpdatingOmuMailboxesTest : IntegrationTestBase() {
 
     webTestClient.put()
       .uri("$BASE_URI/$mailboxId")
-      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER)))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(invalidAttributes)
       .exchange()

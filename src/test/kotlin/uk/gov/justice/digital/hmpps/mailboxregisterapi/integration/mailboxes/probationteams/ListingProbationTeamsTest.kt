@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.web.reactive.server.expectBodyList
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_MAILBOXES_RO
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_USER
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.probationteams.ProbationTeam
 
@@ -23,7 +25,7 @@ class ListingProbationTeamsTest : IntegrationTestBase() {
   fun `returns all the probation teams`() {
     val results = webTestClient.get()
       .uri(apiUrl)
-      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER, ROLE_MAILBOXES_RO)))
       .accept(MediaType.APPLICATION_JSON)
       .exchange()
       .expectStatus().isOk

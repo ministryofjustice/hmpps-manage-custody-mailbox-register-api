@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.context.jdbc.Sql
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_USER
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditAction
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLog
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
@@ -41,7 +42,7 @@ class CreatingProbationTeamsTest : IntegrationTestBase() {
   fun `Creating a probation team`() {
     webTestClient.post()
       .uri(baseUrl)
-      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN"), username = "dummy-username"))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER), username = "dummy-username"))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(attributes)
       .exchange()
@@ -76,7 +77,7 @@ class CreatingProbationTeamsTest : IntegrationTestBase() {
 
     webTestClient.post()
       .uri(baseUrl)
-      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER)))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(attributes)
       .exchange()

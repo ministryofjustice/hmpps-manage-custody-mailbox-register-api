@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.test.context.jdbc.Sql
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.PrisonCode
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_MAILBOXES_RO
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_USER
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitMailbox
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits.OffenderManagementUnitMailboxRepository
@@ -54,7 +56,7 @@ class GettingOmuMailboxesTest : IntegrationTestBase() {
   fun `should return not found if mailbox does not exist`() {
     webTestClient.get()
       .uri("$BASE_URI/$DUMMY_MAILBOX_ID")
-      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER, ROLE_MAILBOXES_RO)))
       .exchange()
       .expectStatus()
       .isNotFound
@@ -71,7 +73,7 @@ class GettingOmuMailboxesTest : IntegrationTestBase() {
 
     val mailbox = webTestClient.get()
       .uri("$BASE_URI/$mailboxId")
-      .headers(setAuthorisation(roles = listOf("MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN")))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER, ROLE_MAILBOXES_RO)))
       .exchange()
       .expectStatus()
       .isOk.expectBody(object : ParameterizedTypeReference<OffenderManagementUnitMailbox>() {})
