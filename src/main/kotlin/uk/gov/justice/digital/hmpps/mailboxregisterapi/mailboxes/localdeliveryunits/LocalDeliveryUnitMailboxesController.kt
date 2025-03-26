@@ -17,24 +17,26 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.HAS_READ_MAILBOXES
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.HAS_SYSTEM_USER
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLog
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 import java.util.UUID
 
 @RestController
-@PreAuthorize("hasRole('MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN')")
 @RequestMapping(value = ["/local-delivery-unit-mailboxes"], produces = ["application/json"])
 class LocalDeliveryUnitMailboxesController(
   private val localDeliveryUnitMailboxService: LocalDeliveryUnitMailboxService,
   private val auditLog: AuditLog,
 ) {
+  @PreAuthorize(HAS_SYSTEM_USER)
   @PostMapping(value = [""])
   @ResponseStatus(code = HttpStatus.CREATED)
   @Operation(
     summary = "Creates a new local delivery unit mailbox",
     description = "Creates a new local delivery unit mailbox",
-    security = [SecurityRequirement(name = "mailbox-register-api-ui-role")],
+    security = [SecurityRequirement(name = "system-user-role")],
     responses = [
       ApiResponse(responseCode = "201", description = "The local delivery unit mailbox was created"),
       ApiResponse(
@@ -57,12 +59,13 @@ class LocalDeliveryUnitMailboxesController(
   fun create(@Valid @RequestBody newMailbox: LocalDeliveryUnitMailboxForm) = localDeliveryUnitMailboxService.createMailbox(newMailbox)
     .also { auditLog.logCreationOf(it) }
 
+  @PreAuthorize(HAS_READ_MAILBOXES)
   @GetMapping(value = [""])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
     summary = "Lists all local delivery unit mailboxes",
     description = "Lists all local delivery unit mailboxes",
-    security = [SecurityRequirement(name = "mailbox-register-api-ui-role")],
+    security = [SecurityRequirement(name = "system-user-role"), SecurityRequirement(name = "mailboxes-ro-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "A list of local delivery unit mailboxes"),
       ApiResponse(
@@ -79,12 +82,13 @@ class LocalDeliveryUnitMailboxesController(
   )
   fun list(): List<LocalDeliveryUnitMailbox> = localDeliveryUnitMailboxService.listMailboxes()
 
+  @PreAuthorize(HAS_READ_MAILBOXES)
   @GetMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
     summary = "Gets a local delivery unit mailbox by ID",
     description = "Gets a local delivery unit mailbox by ID",
-    security = [SecurityRequirement(name = "mailbox-register-api-ui-role")],
+    security = [SecurityRequirement(name = "system-user-role"), SecurityRequirement(name = "mailboxes-ro-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "The local delivery unit mailbox"),
       ApiResponse(
@@ -106,12 +110,13 @@ class LocalDeliveryUnitMailboxesController(
   )
   fun getById(@PathVariable(name = "id") id: UUID) = localDeliveryUnitMailboxService.getMailboxById(id)
 
+  @PreAuthorize(HAS_SYSTEM_USER)
   @PutMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
     summary = "Updates a local delivery unit mailbox",
     description = "Updates a local delivery unit mailbox",
-    security = [SecurityRequirement(name = "mailbox-register-api-ui-role")],
+    security = [SecurityRequirement(name = "system-user-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "The local delivery unit mailbox was updated"),
       ApiResponse(
@@ -141,12 +146,13 @@ class LocalDeliveryUnitMailboxesController(
     localDeliveryUnitMailboxService.updateMailbox(id, mailbox),
   )
 
+  @PreAuthorize(HAS_SYSTEM_USER)
   @DeleteMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
     summary = "Deletes a local delivery unit mailbox",
     description = "Deletes a local delivery unit mailbox",
-    security = [SecurityRequirement(name = "mailbox-register-api-ui-role")],
+    security = [SecurityRequirement(name = "system-user-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "The local delivery unit mailbox was deleted"),
       ApiResponse(
