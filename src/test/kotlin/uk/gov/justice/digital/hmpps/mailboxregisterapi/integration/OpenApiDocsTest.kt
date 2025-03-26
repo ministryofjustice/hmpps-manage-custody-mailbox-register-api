@@ -85,7 +85,7 @@ class OpenApiDocsTest : IntegrationTestBase() {
   @ParameterizedTest
   @CsvSource(
     value = [
-      "system-user-role, MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN, read+write",
+      "system-admin-role, MANAGE_CUSTODY_MAILBOX_REGISTER_ADMIN, read+write",
       "mailboxes-ro-role, ROLE_MANAGE_CUSTODY_MAILBOX_REGISTER__MAILBOXES__RO, read",
     ],
   )

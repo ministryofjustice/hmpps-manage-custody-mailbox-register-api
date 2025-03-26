@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.HAS_READ_MAILBOXES
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.HAS_SYSTEM_USER
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.HAS_SYSTEM_ADMIN
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLog
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
@@ -30,13 +30,13 @@ class ProbationTeamsController(
   private val probationTeamsService: ProbationTeamsService,
   private val auditLog: AuditLog,
 ) {
-  @PreAuthorize(HAS_SYSTEM_USER)
+  @PreAuthorize(HAS_SYSTEM_ADMIN)
   @PostMapping(value = [""])
   @ResponseStatus(code = HttpStatus.CREATED)
   @Operation(
     summary = "Creates a new local delivery unit mailbox",
     description = "Creates a new local delivery unit mailbox",
-    security = [SecurityRequirement(name = "system-user-role")],
+    security = [SecurityRequirement(name = "system-admin-role")],
     responses = [
       ApiResponse(responseCode = "201", description = "The local delivery unit mailbox was created"),
       ApiResponse(
@@ -59,13 +59,13 @@ class ProbationTeamsController(
   fun create(@Valid @RequestBody probationTeamForm: ProbationTeamForm) = probationTeamsService.createProbationTeam(probationTeamForm)
     .also { auditLog.logCreationOf(it) }
 
-  @PreAuthorize(HAS_SYSTEM_USER)
+  @PreAuthorize(HAS_SYSTEM_ADMIN)
   @PutMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
     summary = "Updates a local delivery unit mailbox",
     description = "Updates a local delivery unit mailbox",
-    security = [SecurityRequirement(name = "system-user-role")],
+    security = [SecurityRequirement(name = "system-admin-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "The local delivery unit mailbox was updated"),
       ApiResponse(
@@ -101,7 +101,7 @@ class ProbationTeamsController(
   @Operation(
     summary = "Lists all the probation teams",
     description = "Lists all the probation teams",
-    security = [SecurityRequirement(name = "system-user-role"), SecurityRequirement(name = "mailboxes-ro-role")],
+    security = [SecurityRequirement(name = "system-admin-role"), SecurityRequirement(name = "mailboxes-ro-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "A list of probation teams"),
       ApiResponse(
@@ -124,7 +124,7 @@ class ProbationTeamsController(
   @Operation(
     summary = "Gets a probation team by ID",
     description = "Gets a probation team by ID",
-    security = [SecurityRequirement(name = "system-user-role"), SecurityRequirement(name = "mailboxes-ro-role")],
+    security = [SecurityRequirement(name = "system-admin-role"), SecurityRequirement(name = "mailboxes-ro-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "The requested probation team"),
       ApiResponse(
@@ -146,13 +146,13 @@ class ProbationTeamsController(
   )
   fun getById(@PathVariable(name = "id") id: UUID) = probationTeamsService.byId(id)
 
-  @PreAuthorize(HAS_SYSTEM_USER)
+  @PreAuthorize(HAS_SYSTEM_ADMIN)
   @DeleteMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
     summary = "Deletes a specified probation team",
     description = "Deletes a specified probation team",
-    security = [SecurityRequirement(name = "system-user-role")],
+    security = [SecurityRequirement(name = "system-admin-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "The specified probation team was deleted"),
       ApiResponse(

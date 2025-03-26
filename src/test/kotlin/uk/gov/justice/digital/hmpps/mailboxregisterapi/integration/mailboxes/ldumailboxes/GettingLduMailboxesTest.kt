@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.test.context.jdbc.Sql
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_MAILBOXES_RO
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_USER
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_ADMIN
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.localdeliveryunits.LocalDeliveryUnitMailbox
 import java.util.*
@@ -25,7 +25,7 @@ class GettingLduMailboxesTest : IntegrationTestBase() {
   fun `should return the mailbox details if it exists`() {
     val mailbox = webTestClient.get()
       .uri(apiUrl)
-      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER, ROLE_MAILBOXES_RO)))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_ADMIN, ROLE_MAILBOXES_RO)))
       .exchange()
       .expectStatus()
       .isOk.expectBody(object : ParameterizedTypeReference<LocalDeliveryUnitMailbox>() {})
@@ -77,7 +77,7 @@ class GettingLduMailboxesTest : IntegrationTestBase() {
   fun `should return not found if mailbox does not exist`() {
     webTestClient.get()
       .uri(apiUrl)
-      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER, ROLE_MAILBOXES_RO)))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_ADMIN, ROLE_MAILBOXES_RO)))
       .exchange()
       .expectStatus()
       .isNotFound

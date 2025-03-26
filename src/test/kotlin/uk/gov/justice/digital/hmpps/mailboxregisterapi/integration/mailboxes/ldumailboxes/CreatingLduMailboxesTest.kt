@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.context.jdbc.Sql
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_USER
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_ADMIN
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditAction
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLogEntryRepository
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
@@ -75,7 +75,7 @@ class CreatingLduMailboxesTest : IntegrationTestBase() {
   fun `are created by submitting the correct details`() {
     webTestClient.post()
       .uri(BASE_URI)
-      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER)))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_ADMIN)))
       .bodyValue(attributes)
       .exchange()
       .expectStatus().isCreated
@@ -100,7 +100,7 @@ class CreatingLduMailboxesTest : IntegrationTestBase() {
 
     webTestClient.post()
       .uri(BASE_URI)
-      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER)))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_ADMIN)))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(invalidAttributes)
       .exchange()
@@ -114,7 +114,7 @@ class CreatingLduMailboxesTest : IntegrationTestBase() {
   fun `creation is audit logged`() {
     webTestClient.post()
       .uri(BASE_URI)
-      .headers(setAuthorisation(username = "mailboxUser", roles = listOf(ROLE_SYSTEM_USER)))
+      .headers(setAuthorisation(username = "mailboxUser", roles = listOf(ROLE_SYSTEM_ADMIN)))
       .bodyValue(attributes)
       .exchange()
       .expectStatus().isCreated

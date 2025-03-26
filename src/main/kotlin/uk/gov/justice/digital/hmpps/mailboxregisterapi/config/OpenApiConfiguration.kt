@@ -12,7 +12,7 @@ import org.springframework.boot.info.BuildProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_MAILBOXES_RO
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_USER
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_ADMIN
 
 @Configuration
 class OpenApiConfiguration(buildProperties: BuildProperties) {
@@ -41,15 +41,15 @@ class OpenApiConfiguration(buildProperties: BuildProperties) {
     )
     .components(
       Components().addSecuritySchemes(
-        "system-user-role",
-        SecurityScheme().addBearerJwtRequirement(ROLE_SYSTEM_USER),
+        "system-admin-role",
+        SecurityScheme().addBearerJwtRequirement(ROLE_SYSTEM_ADMIN),
       ).addSecuritySchemes(
         "mailboxes-ro-role",
         SecurityScheme().addBearerJwtRequirement(ROLE_MAILBOXES_RO),
       ),
     )
     .addSecurityItem(
-      SecurityRequirement().addList("system-user-role", listOf("read", "write")).addList("mailboxes-ro-role", listOf("read")),
+      SecurityRequirement().addList("system-admin-role", listOf("read", "write")).addList("mailboxes-ro-role", listOf("read")),
     )
 }
 

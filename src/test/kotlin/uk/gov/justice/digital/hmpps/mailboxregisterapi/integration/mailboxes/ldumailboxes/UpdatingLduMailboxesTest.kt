@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.context.jdbc.Sql
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_USER
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_ADMIN
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditAction
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLog
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
@@ -45,7 +45,7 @@ class UpdatingLduMailboxesTest : IntegrationTestBase() {
       .uri(apiUrl)
       .headers(
         setAuthorisation(
-          roles = listOf(ROLE_SYSTEM_USER),
+          roles = listOf(ROLE_SYSTEM_ADMIN),
           username = "dummy-username",
         ),
       )
@@ -77,7 +77,7 @@ class UpdatingLduMailboxesTest : IntegrationTestBase() {
 
     webTestClient.put()
       .uri(apiUrl)
-      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER)))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_ADMIN)))
       .contentType(MediaType.APPLICATION_JSON)
       .bodyValue(attributes)
       .exchange()

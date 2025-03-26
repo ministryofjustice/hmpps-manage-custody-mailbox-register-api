@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.jdbc.Sql
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_USER
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_ADMIN
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditAction
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLog
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
@@ -36,7 +36,7 @@ class DeletingProbationTeamsTest : IntegrationTestBase() {
       .uri(apiUrl)
       .headers(
         setAuthorisation(
-          roles = listOf(ROLE_SYSTEM_USER),
+          roles = listOf(ROLE_SYSTEM_ADMIN),
           username = "dummy-username",
         ),
       )

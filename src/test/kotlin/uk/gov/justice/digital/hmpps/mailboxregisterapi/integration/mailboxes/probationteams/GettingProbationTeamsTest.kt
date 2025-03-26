@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.test.context.jdbc.Sql
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_MAILBOXES_RO
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_USER
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.ROLE_SYSTEM_ADMIN
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.integration.IntegrationTestBase
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.probationteams.ProbationTeam
 
@@ -24,7 +24,7 @@ class GettingProbationTeamsTest : IntegrationTestBase() {
   fun `return a single requested probation team`() {
     val result = webTestClient.get()
       .uri(apiUrl)
-      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_USER, ROLE_MAILBOXES_RO)))
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_ADMIN, ROLE_MAILBOXES_RO)))
       .exchange()
       .expectStatus().isOk
       .expectBody(object : ParameterizedTypeReference<ProbationTeam>() {})

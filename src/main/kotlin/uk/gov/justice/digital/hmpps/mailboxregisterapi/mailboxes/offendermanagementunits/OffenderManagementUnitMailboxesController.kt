@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.HAS_READ_MAILBOXES
-import uk.gov.justice.digital.hmpps.mailboxregisterapi.HAS_SYSTEM_USER
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.HAS_SYSTEM_ADMIN
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLog
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
@@ -30,13 +30,13 @@ class OffenderManagementUnitMailboxesController(
   private val offenderManagementUnitMailboxService: OffenderManagementUnitMailboxService,
   private val auditLog: AuditLog,
 ) {
-  @PreAuthorize(HAS_SYSTEM_USER)
+  @PreAuthorize(HAS_SYSTEM_ADMIN)
   @PostMapping(value = [""])
   @ResponseStatus(code = HttpStatus.CREATED)
   @Operation(
     summary = "Creates a new offender management unit mailbox",
     description = "Creates a new offender management unit mailbox",
-    security = [SecurityRequirement(name = "system-user-role")],
+    security = [SecurityRequirement(name = "system-admin-role")],
     responses = [
       ApiResponse(responseCode = "201", description = "The offender management unit mailbox was created"),
       ApiResponse(
@@ -65,7 +65,7 @@ class OffenderManagementUnitMailboxesController(
   @Operation(
     summary = "Lists all offender management unit mailboxes",
     description = "Lists all offender management unit mailboxes",
-    security = [SecurityRequirement(name = "system-user-role"), SecurityRequirement(name = "mailboxes-ro-role")],
+    security = [SecurityRequirement(name = "system-admin-role"), SecurityRequirement(name = "mailboxes-ro-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "The list of offender management unit mailboxes"),
       ApiResponse(
@@ -88,7 +88,7 @@ class OffenderManagementUnitMailboxesController(
   @Operation(
     summary = "Gets an offender management unit mailbox by ID",
     description = "Gets an offender management unit mailbox by ID",
-    security = [SecurityRequirement(name = "system-user-role"), SecurityRequirement(name = "mailboxes-ro-role")],
+    security = [SecurityRequirement(name = "system-admin-role"), SecurityRequirement(name = "mailboxes-ro-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "The offender management unit mailbox"),
       ApiResponse(
@@ -110,13 +110,13 @@ class OffenderManagementUnitMailboxesController(
   )
   fun getById(@PathVariable(name = "id") id: UUID) = offenderManagementUnitMailboxService.getMailboxById(id)
 
-  @PreAuthorize(HAS_SYSTEM_USER)
+  @PreAuthorize(HAS_SYSTEM_ADMIN)
   @PutMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
     summary = "Updates an offender management unit mailbox by ID",
     description = "Updates an offender management unit mailbox by ID",
-    security = [SecurityRequirement(name = "system-user-role")],
+    security = [SecurityRequirement(name = "system-admin-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "The offender management unit mailbox was updated"),
       ApiResponse(
@@ -146,13 +146,13 @@ class OffenderManagementUnitMailboxesController(
     offenderManagementUnitMailboxService.updateMailbox(id, mailbox),
   )
 
-  @PreAuthorize(HAS_SYSTEM_USER)
+  @PreAuthorize(HAS_SYSTEM_ADMIN)
   @DeleteMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
     summary = "Deletes an offender management unit mailbox by ID",
     description = "Deletes an offender management unit mailbox by ID",
-    security = [SecurityRequirement(name = "system-user-role")],
+    security = [SecurityRequirement(name = "system-admin-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "The offender management unit mailbox was deleted"),
       ApiResponse(
