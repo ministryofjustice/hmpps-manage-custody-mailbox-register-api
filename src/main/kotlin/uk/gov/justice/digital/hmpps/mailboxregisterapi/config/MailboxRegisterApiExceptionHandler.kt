@@ -2,7 +2,9 @@ package uk.gov.justice.digital.hmpps.mailboxregisterapi.config
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import jakarta.validation.ValidationException
+import org.hibernate.exception.ConstraintViolationException
 import org.slf4j.LoggerFactory
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.FORBIDDEN
 import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.resource.NoResourceFoundException
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.FailedValidationException
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.ValidationErrorResponse
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.localdeliveryunits.UNIT_CODE_UNIQUE_CONSTRAINT
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 
 @RestControllerAdvice
@@ -30,6 +33,25 @@ class MailboxRegisterApiExceptionHandler {
         developerMessage = e.message,
       ),
     ).also { log.info("Validation exception: {}", e.message) }
+
+  @ExceptionHandler(DataIntegrityViolationException::class)
+  fun handleValidationException(e: DataIntegrityViolationException): ResponseEntity<ValidationErrorResponse> {
+    if (e.cause !is ConstraintViolationException) throw e
+
+    val errors = when (val constraintName = (e.cause as ConstraintViolationException).constraintName) {
+      UNIT_CODE_UNIQUE_CONSTRAINT -> mapOf("unitCode" to "Unit Code already exists")
+      else -> mapOf("error" to "Database constraint violation: $constraintName")
+    }
+
+    return ResponseEntity.status(BAD_REQUEST)
+      .body(
+        ValidationErrorResponse(
+          errors = errors,
+          message = "Constraint violation",
+          status = BAD_REQUEST.value(),
+        ),
+      )
+  }
 
   @ExceptionHandler(MethodArgumentNotValidException::class)
   fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseEntity<ValidationErrorResponse> = ResponseEntity
