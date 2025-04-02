@@ -32,7 +32,7 @@ class CreatingLduMailboxesTest : IntegrationTestBase() {
   @BeforeEach
   fun setup() {
     attributes = HashMap<String, String?>().apply {
-      put("unitCode", "UNIT_CODE")
+      put("unitCode", "CODE123")
       put("areaCode", "AREA_CODE")
       put("name", "Mailbox Name")
       put("emailAddress", "ldu@example.com")
@@ -83,7 +83,7 @@ class CreatingLduMailboxesTest : IntegrationTestBase() {
     Assertions.assertThat(localDeliveryUnitMailboxes.count()).isOne()
 
     localDeliveryUnitMailboxes.findAll().first().apply {
-      Assertions.assertThat(unitCode).isEqualTo("UNIT_CODE")
+      Assertions.assertThat(unitCode).isEqualTo("CODE123")
       Assertions.assertThat(areaCode).isEqualTo("AREA_CODE")
       Assertions.assertThat(name).isEqualTo("Mailbox Name")
       Assertions.assertThat(emailAddress).isEqualTo("ldu@example.com")
@@ -92,7 +92,7 @@ class CreatingLduMailboxesTest : IntegrationTestBase() {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = ["unitCode", "areaCode", "emailAddress"])
+  @ValueSource(strings = ["unitCode", "emailAddress", "country", "name"])
   fun `without the required fields mailboxes are not created`(nullFieldName: String) {
     val invalidAttributes = attributes.toMutableMap().apply {
       this[nullFieldName] = null

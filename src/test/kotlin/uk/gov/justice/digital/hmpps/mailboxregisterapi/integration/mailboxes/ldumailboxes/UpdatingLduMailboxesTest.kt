@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -32,7 +33,7 @@ class UpdatingLduMailboxesTest : IntegrationTestBase() {
   private var apiUrl = "/local-delivery-unit-mailboxes/$existingLocalDeliveryUnitMailboxId"
 
   private var attributes = hashMapOf<String, Any?>(
-    "unitCode" to "UPDATED_UNIT_CODE",
+    "unitCode" to "NEWCODE",
     "areaCode" to "UPDATED_AREA_CODE",
     "name" to "Updated Mailbox Name",
     "emailAddress" to "updated-ldu@example.com",
@@ -57,7 +58,7 @@ class UpdatingLduMailboxesTest : IntegrationTestBase() {
     assertThat(updatedLocalDeliveryUnitMailbox).isNotNull
 
     updatedLocalDeliveryUnitMailbox.apply {
-      assertThat(unitCode).isEqualTo("UPDATED_UNIT_CODE")
+      assertThat(unitCode).isEqualTo("NEWCODE")
       assertThat(areaCode).isEqualTo("UPDATED_AREA_CODE")
       assertThat(name).isEqualTo("Updated Mailbox Name")
       assertThat(emailAddress).isEqualTo("updated-ldu@example.com")
@@ -71,7 +72,7 @@ class UpdatingLduMailboxesTest : IntegrationTestBase() {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = ["unitCode", "areaCode", "emailAddress"])
+  @ValueSource(strings = ["unitCode", "emailAddress", "country", "name"])
   fun `without the required fields mailboxes are not updated`(nullFieldName: String) {
     attributes[nullFieldName] = null
 
@@ -83,6 +84,27 @@ class UpdatingLduMailboxesTest : IntegrationTestBase() {
       .exchange()
       .expectStatus().isBadRequest
       .expectBody().jsonPath("$.errors.$nullFieldName").isEqualTo("must not be blank")
+  }
+
+  @ParameterizedTest
+  @CsvSource(
+    delimiter = '|',
+    textBlock = """
+      unitCode      | X-123-Z   | must contain only letters and numbers
+      emailAddress  | notValid  | must be a well-formed email address
+      country       | UK        | must be either 'England' or 'Wales'""",
+  )
+  fun `cannot update with invalid fields`(fieldName: String, fieldValue: Any?, expectedValidationMessage: String) {
+    attributes[fieldName] = fieldValue
+
+    webTestClient.put()
+      .uri(apiUrl)
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_ADMIN)))
+      .contentType(MediaType.APPLICATION_JSON)
+      .bodyValue(attributes)
+      .exchange()
+      .expectStatus().isBadRequest
+      .expectBody().jsonPath("$.errors.$fieldName").isEqualTo(expectedValidationMessage)
   }
 
   @Test

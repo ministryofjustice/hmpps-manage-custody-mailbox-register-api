@@ -34,7 +34,7 @@ class GettingLduMailboxesTest : IntegrationTestBase() {
     Assertions.assertThat(mailbox).isNotNull
     mailbox.apply {
       Assertions.assertThat(id).isEqualTo(localDeliveryUnitMailboxId)
-      Assertions.assertThat(unitCode).isEqualTo("UNIT_CODE_1")
+      Assertions.assertThat(unitCode).isEqualTo("CODE1")
       Assertions.assertThat(areaCode).isEqualTo("AREA_CODE_1")
       Assertions.assertThat(name).isEqualTo("Test Mailbox 1")
       Assertions.assertThat(emailAddress).isEqualTo("ldu1@example.com")

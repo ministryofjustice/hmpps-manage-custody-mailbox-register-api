@@ -30,8 +30,8 @@ class ListingLduMailboxesTest : IntegrationTestBase() {
       .returnResult().responseBody!!
 
     Assertions.assertThat(mailboxes).hasSize(2)
-    Assertions.assertThat(mailboxes[0].unitCode).isEqualTo("UNIT_CODE_1")
-    Assertions.assertThat(mailboxes[1].unitCode).isEqualTo("UNIT_CODE_2")
+    Assertions.assertThat(mailboxes[0].unitCode).isEqualTo("CODE1")
+    Assertions.assertThat(mailboxes[1].unitCode).isEqualTo("CODE2")
   }
 
   @Test
