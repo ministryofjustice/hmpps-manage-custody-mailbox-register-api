@@ -10,7 +10,7 @@ generic-service:
 
   postgresDatabaseRestore:
     enabled: true
-    schedule: "30 7 */2 * 1-5"
+    schedule: "30 7 * * 3" # At 07:30 on Wednesdays
     jobName: "hmpps-manage-custody-mailbox-register-db-refresh"
     namespace_secrets:
       rds-instance-output:
