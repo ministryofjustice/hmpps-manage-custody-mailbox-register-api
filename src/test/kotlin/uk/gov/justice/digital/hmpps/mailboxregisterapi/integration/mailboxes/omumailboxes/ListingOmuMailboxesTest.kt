@@ -58,8 +58,30 @@ class ListingOmuMailboxesTest : IntegrationTestBase() {
       .expectBody(object : ParameterizedTypeReference<List<OffenderManagementUnitMailbox>>() {})
       .returnResult().responseBody!!
 
-    Assertions.assertThat(mailboxes).hasSize(2)
+    Assertions.assertThat(mailboxes).hasSize(5)
     Assertions.assertThat(mailboxes[0].name).isEqualTo("Test OMU Mailbox 1")
     Assertions.assertThat(mailboxes[1].name).isEqualTo("Test OMU Mailbox 2")
+    Assertions.assertThat(mailboxes[2].name).isEqualTo("Test OMU Mailbox 3")
+    Assertions.assertThat(mailboxes[3].name).isEqualTo("Test OMU Mailbox 4")
+    Assertions.assertThat(mailboxes[4].name).isEqualTo("Test OMU Mailbox 5")
+  }
+
+  @Sql(
+    "classpath:test_data/reset.sql",
+    "classpath:test_data/some_omu_mailboxes.sql",
+  )
+  @Test
+  fun `should return a list of existing mailboxes with an optional filter by prison code`() {
+    val mailboxes = webTestClient.get()
+      .uri("$BASE_URI?prison=LEI")
+      .headers(setAuthorisation(roles = listOf(ROLE_MAILBOXES_RO)))
+      .exchange()
+      .expectStatus().isOk
+      .expectBody(object : ParameterizedTypeReference<List<OffenderManagementUnitMailbox>>() {})
+      .returnResult().responseBody!!
+
+    Assertions.assertThat(mailboxes).hasSize(2)
+    Assertions.assertThat(mailboxes[0].name).isEqualTo("Test OMU Mailbox 1")
+    Assertions.assertThat(mailboxes[1].name).isEqualTo("Test OMU Mailbox 5")
   }
 }

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.resource.NoResourceFoundException
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.PrisonCode
 import java.util.UUID
 
 @Service
@@ -32,7 +33,11 @@ class OffenderManagementUnitMailboxService(
   }
 
   @Transactional
-  fun listMailboxes(): List<OffenderManagementUnitMailbox> = repository.findAll(Sort.by(Sort.Direction.ASC, OffenderManagementUnitMailbox::createdAt.name))
+  fun listMailboxes(prisonCode: PrisonCode?): List<OffenderManagementUnitMailbox> = if (prisonCode != null) {
+    repository.findAllByPrisonCode(prisonCode, Sort.by(Sort.Direction.ASC, OffenderManagementUnitMailbox::createdAt.name))
+  } else {
+    repository.findAll(Sort.by(Sort.Direction.ASC, OffenderManagementUnitMailbox::createdAt.name))
+  }
 
   @Transactional
   fun deleteMailbox(id: UUID) {
