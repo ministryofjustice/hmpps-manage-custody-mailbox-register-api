@@ -66,7 +66,7 @@ class OffenderManagementUnitMailboxesController(
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
     summary = "Lists all offender management unit mailboxes",
-    description = "Lists all offender management unit mailboxes, or optionally filtered by prison code",
+    description = "Lists all offender management unit mailboxes, or optionally filtered by prison code and/or role",
     security = [SecurityRequirement(name = "system-admin-role"), SecurityRequirement(name = "mailboxes-ro-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "The list of offender management unit mailboxes"),
@@ -82,7 +82,7 @@ class OffenderManagementUnitMailboxesController(
       ),
     ],
   )
-  fun list(@RequestParam(name = "prison", required = false) prisonCode: PrisonCode?) = offenderManagementUnitMailboxService.listMailboxes(prisonCode)
+  fun list(@RequestParam(name = "prison", required = false) prisonCode: PrisonCode?, @RequestParam(name = "role", required = false) role: OffenderManagementUnitRole?) = offenderManagementUnitMailboxService.listMailboxes(prisonCode, role)
 
   @PreAuthorize(HAS_READ_MAILBOXES)
   @GetMapping(value = ["/{id}"])

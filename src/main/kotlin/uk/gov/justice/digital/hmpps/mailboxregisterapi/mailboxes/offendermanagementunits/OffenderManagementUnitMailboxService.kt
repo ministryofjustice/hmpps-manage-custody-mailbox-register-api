@@ -1,6 +1,8 @@
 package uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.offendermanagementunits
 
 import jakarta.transaction.Transactional
+import org.springframework.data.domain.Example
+import org.springframework.data.domain.ExampleMatcher
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
@@ -32,15 +34,24 @@ class OffenderManagementUnitMailboxService(
     return repository.saveAndFlush(existingMailbox)
   }
 
-  @Transactional
-  fun listMailboxes(prisonCode: PrisonCode?): List<OffenderManagementUnitMailbox> = if (prisonCode != null) {
-    repository.findAllByPrisonCode(prisonCode, Sort.by(Sort.Direction.ASC, OffenderManagementUnitMailbox::createdAt.name))
-  } else {
-    repository.findAll(Sort.by(Sort.Direction.ASC, OffenderManagementUnitMailbox::createdAt.name))
-  }
+  fun listMailboxes(
+    prisonCode: PrisonCode?,
+    role: OffenderManagementUnitRole?,
+  ): List<OffenderManagementUnitMailbox> = repository.findAll(
+    Example.of(OffenderManagementUnitMailbox(role = role, prisonCode = prisonCode), FILTER),
+    SORTED_BY_CREATED_AT_ASC,
+  )
 
   @Transactional
   fun deleteMailbox(id: UUID) {
     repository.delete(getMailboxById(id))
+  }
+
+  companion object {
+    val SORTED_BY_CREATED_AT_ASC: Sort = Sort.by(Sort.Direction.ASC, OffenderManagementUnitMailbox::createdAt.name)
+    val FILTER: ExampleMatcher = ExampleMatcher.matchingAll()
+      .withMatcher("role", ExampleMatcher.GenericPropertyMatchers.exact())
+      .withMatcher("prisonCode", ExampleMatcher.GenericPropertyMatchers.exact())
+      .withIgnorePaths("id", "name", "emailAddress", "createdAt", "updatedAt")
   }
 }
