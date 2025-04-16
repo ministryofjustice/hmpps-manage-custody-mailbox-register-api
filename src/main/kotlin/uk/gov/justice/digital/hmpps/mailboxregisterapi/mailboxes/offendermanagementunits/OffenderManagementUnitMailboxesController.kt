@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.HAS_READ_MAILBOXES
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.HAS_SYSTEM_ADMIN
+import uk.gov.justice.digital.hmpps.mailboxregisterapi.PrisonCode
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.audit.AuditLog
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
@@ -64,7 +66,7 @@ class OffenderManagementUnitMailboxesController(
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
     summary = "Lists all offender management unit mailboxes",
-    description = "Lists all offender management unit mailboxes",
+    description = "Lists all offender management unit mailboxes, or optionally filtered by prison code and/or role",
     security = [SecurityRequirement(name = "system-admin-role"), SecurityRequirement(name = "mailboxes-ro-role")],
     responses = [
       ApiResponse(responseCode = "200", description = "The list of offender management unit mailboxes"),
@@ -80,7 +82,7 @@ class OffenderManagementUnitMailboxesController(
       ),
     ],
   )
-  fun list() = offenderManagementUnitMailboxService.listMailboxes()
+  fun list(@RequestParam(name = "prison", required = false) prisonCode: PrisonCode?, @RequestParam(name = "role", required = false) role: OffenderManagementUnitRole?) = offenderManagementUnitMailboxService.listMailboxes(prisonCode, role)
 
   @PreAuthorize(HAS_READ_MAILBOXES)
   @GetMapping(value = ["/{id}"])
