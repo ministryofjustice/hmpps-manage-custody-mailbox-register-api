@@ -1,5 +1,5 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "8.2.0"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "8.3.0-beta"
   kotlin("plugin.spring") version "2.1.21"
 }
 
@@ -19,7 +19,7 @@ dependencies {
   testImplementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter-test:1.4.6")
   testImplementation("com.h2database:h2")
   testImplementation("org.wiremock:wiremock-standalone:3.13.1")
-  testImplementation("io.swagger.parser.v3:swagger-parser:2.1.29") {
+  testImplementation("io.swagger.parser.v3:swagger-parser:2.1.30") {
     exclude(group = "io.swagger.core.v3")
   }
 }
