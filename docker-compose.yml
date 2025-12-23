@@ -1,4 +1,3 @@
-version: "3"
 services:
   hmpps-manage-custody-mailbox-register-api:
     build:
