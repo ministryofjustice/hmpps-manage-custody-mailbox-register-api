@@ -15,7 +15,7 @@ class LocalDeliveryUnitMailboxService(
   fun createMailbox(newMailbox: LocalDeliveryUnitMailboxForm): LocalDeliveryUnitMailbox = repository.saveAndFlush(newMailbox.asEntity())
 
   @Transactional
-  fun getMailboxById(id: UUID): LocalDeliveryUnitMailbox = repository.findById(id).orElseThrow { NoResourceFoundException(HttpMethod.GET, id.toString()) }
+  fun getMailboxById(id: UUID): LocalDeliveryUnitMailbox = repository.findById(id).orElseThrow { NoResourceFoundException(HttpMethod.GET, "", id.toString()) }
 
   @Transactional
   fun listMailboxes(): List<LocalDeliveryUnitMailbox> = repository.findAll(Sort.by(Sort.Direction.ASC, LocalDeliveryUnitMailbox::createdAt.name))

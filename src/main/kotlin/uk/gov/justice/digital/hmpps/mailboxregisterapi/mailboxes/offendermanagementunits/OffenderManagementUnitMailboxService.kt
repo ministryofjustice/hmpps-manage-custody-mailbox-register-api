@@ -18,7 +18,7 @@ class OffenderManagementUnitMailboxService(
   fun createMailbox(newMailbox: OffenderManagementUnitMailboxForm): OffenderManagementUnitMailbox = repository.saveAndFlush(newMailbox.asEntity())
 
   @Transactional
-  fun getMailboxById(id: UUID): OffenderManagementUnitMailbox = repository.findById(id).orElseThrow { NoResourceFoundException(HttpMethod.GET, id.toString()) }
+  fun getMailboxById(id: UUID): OffenderManagementUnitMailbox = repository.findById(id).orElseThrow { NoResourceFoundException(HttpMethod.GET, "", id.toString()) }
 
   @Transactional
   fun updateMailbox(id: UUID, mailbox: OffenderManagementUnitMailboxForm): OffenderManagementUnitMailbox {
