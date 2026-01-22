@@ -65,5 +65,5 @@ class AuditLog(
 
   private fun changedPair(a: Any?, b: Any?): List<Any?> = if (a == b) emptyList() else listOf(a, b)
 
-  private fun username(givenUsername: String? = null) = givenUsername ?: SecurityContextHolder.getContext().authentication.principal as String
+  private fun username(givenUsername: String? = null) = givenUsername ?: SecurityContextHolder.getContext().authentication?.principal as String
 }
