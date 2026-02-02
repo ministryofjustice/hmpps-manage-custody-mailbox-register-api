@@ -1,6 +1,5 @@
 package uk.gov.justice.digital.hmpps.mailboxregisterapi.config
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import jakarta.validation.ValidationException
 import org.hibernate.exception.ConstraintViolationException
 import org.slf4j.LoggerFactory
@@ -16,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.resource.NoResourceFoundException
+import tools.jackson.databind.exc.InvalidFormatException
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.FailedValidationException
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.ValidationErrorResponse
 import uk.gov.justice.digital.hmpps.mailboxregisterapi.mailboxes.localdeliveryunits.UNIT_CODE_UNIQUE_CONSTRAINT
@@ -77,18 +77,16 @@ class MailboxRegisterApiExceptionHandler {
 
   @ExceptionHandler(HttpMessageNotReadableException::class)
   fun handleHttpMessageNotReadableException(e: HttpMessageNotReadableException): ResponseEntity<ValidationErrorResponse> {
-    when (e.cause) {
-      is InvalidFormatException -> {
-        if ((e.cause as InvalidFormatException).targetType.isEnum) {
-          return handleInvalidEnumValues(e.cause as InvalidFormatException)
-        }
-      }
+    val cause = e.cause
+    return if (cause is InvalidFormatException && cause.targetType.isEnum) {
+      handleInvalidEnumValues(cause)
+    } else {
+      throw e
     }
-    throw e
   }
 
   private fun handleInvalidEnumValues(invalidFormatException: InvalidFormatException): ResponseEntity<ValidationErrorResponse> {
-    val fieldName = invalidFormatException.path[0].fieldName
+    val fieldName = invalidFormatException.path[0].propertyName
     val correctValues = invalidFormatException.targetType.enumConstants.joinToString(",")
     val message = "must be one of $correctValues"
 
