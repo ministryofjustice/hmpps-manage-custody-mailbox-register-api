@@ -10,6 +10,7 @@ dependencies {
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+  implementation("org.springframework.boot:spring-boot-starter-flyway")
   runtimeOnly("org.flywaydb:flyway-database-postgresql")
   runtimeOnly("org.postgresql:postgresql:42.7.9")
 
