@@ -42,6 +42,18 @@ jobs:
     secrets: inherit
     with:
       java-version: "25"
+  verify_docker_image:
+    name: Verify docker image
+    if: github.ref != 'refs/heads/main'
+    uses: ministryofjustice/hmpps-github-actions/.github/workflows/docker_build.yml@v2 # WORKFLOW_VERSION
+    needs:
+      - gradle_verify
+    with:
+      docker_registry: 'ghcr.io'
+      registry_org: 'ministryofjustice'
+      additional_docker_tag: ${{ inputs.additional_docker_tag }}
+      push: false
+      docker_multiplatform: false
   build:
     name: Build docker image from hmpps-github-actions
     if: github.ref == 'refs/heads/main'
