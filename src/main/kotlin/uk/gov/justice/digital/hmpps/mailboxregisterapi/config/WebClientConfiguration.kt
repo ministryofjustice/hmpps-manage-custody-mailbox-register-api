@@ -13,8 +13,11 @@ class WebClientConfiguration(
   @Value("\${api.health-timeout:2s}") val healthTimeout: Duration,
   @Value("\${api.timeout:20s}") val timeout: Duration,
 ) {
+  @Bean
+  fun webClientBuilder(): WebClient.Builder = WebClient.builder()
+
   // HMPPS Auth health ping is required if your service calls HMPPS Auth to get a token to call other services
   // TODO: Remove the health ping if no call outs to other services are made
   @Bean
-  fun hmppsAuthHealthWebClient(builder: WebClient.Builder): WebClient = builder.healthWebClient(hmppsAuthBaseUri, healthTimeout)
+  fun hmppsAuthHealthWebClient(): WebClient = webClientBuilder().healthWebClient(hmppsAuthBaseUri, healthTimeout)
 }

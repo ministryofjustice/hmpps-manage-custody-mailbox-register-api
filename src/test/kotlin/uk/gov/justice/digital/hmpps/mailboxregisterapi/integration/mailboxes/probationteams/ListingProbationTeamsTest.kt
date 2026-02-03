@@ -30,7 +30,7 @@ class ListingProbationTeamsTest : IntegrationTestBase() {
       .exchange()
       .expectStatus().isOk
       .expectBodyList<ProbationTeam>()
-      .returnResult().responseBody
+      .returnResult().responseBody!!
 
     assertThat(results.size).isEqualTo(2)
     assertThat(results[0].emailAddress).isEqualTo("probation.team1@email.com")

@@ -28,7 +28,7 @@ class GettingProbationTeamsTest : IntegrationTestBase() {
       .exchange()
       .expectStatus().isOk
       .expectBody(object : ParameterizedTypeReference<ProbationTeam>() {})
-      .returnResult().responseBody
+      .returnResult().responseBody!!
 
     assertThat(result).isNotNull()
     assertThat(result.emailAddress).isEqualTo("probation.team2@email.com")
