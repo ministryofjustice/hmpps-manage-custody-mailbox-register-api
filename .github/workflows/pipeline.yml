@@ -37,6 +37,7 @@ jobs:
     with:
       environment: ${{ matrix.environments }}
   app_version:
+    name: Create app version
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.app_version.outputs.version }}
@@ -50,25 +51,12 @@ jobs:
     secrets: inherit
     with:
       gradle-command: 'BUILD_NUMBER=${{ needs.app_version.outputs.version}} ./gradlew assemble check'
-      upload-build-artifacts: true #${{ github.ref == 'refs/heads/main' }} TODO: change back
+      upload-build-artifacts: ${{ github.ref == 'refs/heads/main' }}
       java-version: "25"
     needs:
       - app_version
-  verify_docker_image:
-    name: Verify docker image
-    if: github.ref != 'refs/heads/main'
-    uses: ministryofjustice/hmpps-github-actions/.github/workflows/docker_build.yml@v2 # WORKFLOW_VERSION
-    needs:
-      - gradle_verify
-    with:
-      docker_registry: 'ghcr.io'
-      registry_org: 'ministryofjustice'
-      additional_docker_tag: ${{ inputs.additional_docker_tag }}
-      push: false
-      docker_multiplatform: false
-      download_build_artifacts: true
   build:
-    name: Build docker image from hmpps-github-actions
+    name: Build docker image
     if: github.ref == 'refs/heads/main'
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/docker_build.yml@v2 # WORKFLOW_VERSION
     needs:
