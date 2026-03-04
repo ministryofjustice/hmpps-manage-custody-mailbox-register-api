@@ -1,18 +1,18 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "10.0.0"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "10.0.4"
   id("org.owasp.dependencycheck") version "12.2.0"
-  kotlin("plugin.spring") version "2.3.0"
+  kotlin("plugin.spring") version "2.3.10"
 }
 
 dependencies {
-  implementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter:2.0.0")
+  implementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter:2.0.2")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
-  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1")
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
   implementation("org.springframework.boot:spring-boot-starter-flyway")
   runtimeOnly("org.flywaydb:flyway-database-postgresql")
-  runtimeOnly("org.postgresql:postgresql:42.7.9")
+  runtimeOnly("org.postgresql:postgresql:42.7.10")
 
   testImplementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter-test:2.0.0")
   testImplementation("org.springframework.boot:spring-boot-starter-webflux-test")
