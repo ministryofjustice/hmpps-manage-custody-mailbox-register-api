@@ -34,6 +34,7 @@ class LocalDeliveryUnitMailboxesController(
   @PostMapping(value = [""])
   @ResponseStatus(code = HttpStatus.CREATED)
   @Operation(
+    operationId = "createLocalDeliveryUnitMailbox",
     summary = "Creates a new local delivery unit mailbox",
     description = "Creates a new local delivery unit mailbox",
     security = [SecurityRequirement(name = "system-admin-role")],
@@ -63,6 +64,7 @@ class LocalDeliveryUnitMailboxesController(
   @GetMapping(value = [""])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
+    operationId = "listLocalDeliveryUnitMailboxes",
     summary = "Lists all local delivery unit mailboxes",
     description = "Lists all local delivery unit mailboxes",
     security = [SecurityRequirement(name = "system-admin-role"), SecurityRequirement(name = "mailboxes-ro-role")],
@@ -86,6 +88,7 @@ class LocalDeliveryUnitMailboxesController(
   @GetMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
+    operationId = "getLocalDeliveryUnitMailboxById",
     summary = "Gets a local delivery unit mailbox by ID",
     description = "Gets a local delivery unit mailbox by ID",
     security = [SecurityRequirement(name = "system-admin-role"), SecurityRequirement(name = "mailboxes-ro-role")],
@@ -114,6 +117,7 @@ class LocalDeliveryUnitMailboxesController(
   @PutMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
+    operationId = "updateLocalDeliveryUnitMailbox",
     summary = "Updates a local delivery unit mailbox",
     description = "Updates a local delivery unit mailbox",
     security = [SecurityRequirement(name = "system-admin-role")],
@@ -150,6 +154,7 @@ class LocalDeliveryUnitMailboxesController(
   @DeleteMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
+    operationId = "deleteLocalDeliveryUnitMailbox",
     summary = "Deletes a local delivery unit mailbox",
     description = "Deletes a local delivery unit mailbox",
     security = [SecurityRequirement(name = "system-admin-role")],

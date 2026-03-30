@@ -34,6 +34,7 @@ class ProbationTeamsController(
   @PostMapping(value = [""])
   @ResponseStatus(code = HttpStatus.CREATED)
   @Operation(
+    operationId = "createProbationTeam",
     summary = "Creates a new local delivery unit mailbox",
     description = "Creates a new local delivery unit mailbox",
     security = [SecurityRequirement(name = "system-admin-role")],
@@ -63,6 +64,7 @@ class ProbationTeamsController(
   @PutMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
+    operationId = "updateProbationTeam",
     summary = "Updates a local delivery unit mailbox",
     description = "Updates a local delivery unit mailbox",
     security = [SecurityRequirement(name = "system-admin-role")],
@@ -99,6 +101,7 @@ class ProbationTeamsController(
   @GetMapping(value = [""])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
+    operationId = "listProbationTeams",
     summary = "Lists all the probation teams",
     description = "Lists all the probation teams",
     security = [SecurityRequirement(name = "system-admin-role"), SecurityRequirement(name = "mailboxes-ro-role")],
@@ -122,6 +125,7 @@ class ProbationTeamsController(
   @GetMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
+    operationId = "getProbationTeamById",
     summary = "Gets a probation team by ID",
     description = "Gets a probation team by ID",
     security = [SecurityRequirement(name = "system-admin-role"), SecurityRequirement(name = "mailboxes-ro-role")],
@@ -150,6 +154,7 @@ class ProbationTeamsController(
   @DeleteMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
+    operationId = "deleteProbationTeam",
     summary = "Deletes a specified probation team",
     description = "Deletes a specified probation team",
     security = [SecurityRequirement(name = "system-admin-role")],
