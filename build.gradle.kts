@@ -1,11 +1,11 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "10.0.4"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "10.1.1"
   id("org.owasp.dependencycheck") version "12.2.0"
-  kotlin("plugin.spring") version "2.3.10"
+  kotlin("plugin.spring") version "2.3.20"
 }
 
 dependencies {
-  implementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter:2.0.2")
+  implementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter:2.1.0")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -14,7 +14,7 @@ dependencies {
   runtimeOnly("org.flywaydb:flyway-database-postgresql")
   runtimeOnly("org.postgresql:postgresql:42.7.10")
 
-  testImplementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter-test:2.0.0")
+  testImplementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter-test:2.1.0")
   testImplementation("org.springframework.boot:spring-boot-starter-webflux-test")
   testImplementation("com.h2database:h2")
   testImplementation("org.wiremock:wiremock-standalone:3.13.2")
@@ -33,6 +33,15 @@ kotlin {
 tasks {
   withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     compilerOptions.jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25
+  }
+}
+
+configurations.all {
+  resolutionStrategy.eachDependency {
+    if (requested.group == "org.mozilla" && requested.name == "rhino") {
+      useVersion("1.8.0")
+      because("CVE-2025-66453: force latest rhino to address DoS advisory")
+    }
   }
 }
 

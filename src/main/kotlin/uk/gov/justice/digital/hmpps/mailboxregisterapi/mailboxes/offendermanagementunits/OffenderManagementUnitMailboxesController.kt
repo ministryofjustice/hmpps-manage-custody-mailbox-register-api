@@ -36,6 +36,7 @@ class OffenderManagementUnitMailboxesController(
   @PostMapping(value = [""])
   @ResponseStatus(code = HttpStatus.CREATED)
   @Operation(
+    operationId = "createOffenderManagementUnitMailbox",
     summary = "Creates a new offender management unit mailbox",
     description = "Creates a new offender management unit mailbox",
     security = [SecurityRequirement(name = "system-admin-role")],
@@ -65,6 +66,7 @@ class OffenderManagementUnitMailboxesController(
   @GetMapping(value = [""])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
+    operationId = "listOffenderManagementUnitMailboxes",
     summary = "Lists all offender management unit mailboxes",
     description = "Lists all offender management unit mailboxes, or optionally filtered by prison code and/or role",
     security = [SecurityRequirement(name = "system-admin-role"), SecurityRequirement(name = "mailboxes-ro-role")],
@@ -88,6 +90,7 @@ class OffenderManagementUnitMailboxesController(
   @GetMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
+    operationId = "getOffenderManagementUnitMailboxById",
     summary = "Gets an offender management unit mailbox by ID",
     description = "Gets an offender management unit mailbox by ID",
     security = [SecurityRequirement(name = "system-admin-role"), SecurityRequirement(name = "mailboxes-ro-role")],
@@ -116,6 +119,7 @@ class OffenderManagementUnitMailboxesController(
   @PutMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
+    operationId = "updateOffenderManagementUnitMailbox",
     summary = "Updates an offender management unit mailbox by ID",
     description = "Updates an offender management unit mailbox by ID",
     security = [SecurityRequirement(name = "system-admin-role")],
@@ -152,6 +156,7 @@ class OffenderManagementUnitMailboxesController(
   @DeleteMapping(value = ["/{id}"])
   @ResponseStatus(code = HttpStatus.OK)
   @Operation(
+    operationId = "deleteOffenderManagementUnitMailbox",
     summary = "Deletes an offender management unit mailbox by ID",
     description = "Deletes an offender management unit mailbox by ID",
     security = [SecurityRequirement(name = "system-admin-role")],
