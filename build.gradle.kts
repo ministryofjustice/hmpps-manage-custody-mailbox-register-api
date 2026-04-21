@@ -1,13 +1,13 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "10.1.1"
-  id("org.owasp.dependencycheck") version "12.2.0"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "10.2.1"
+  id("org.owasp.dependencycheck") version "12.2.1"
   kotlin("plugin.spring") version "2.3.20"
 }
 
 dependencies {
   implementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter:2.1.0")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
-  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
   implementation("org.springframework.boot:spring-boot-starter-flyway")
