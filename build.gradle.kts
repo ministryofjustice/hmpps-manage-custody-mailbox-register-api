@@ -1,7 +1,7 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "10.3.1"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "10.5.0"
   id("org.owasp.dependencycheck") version "12.2.2"
-  kotlin("plugin.spring") version "2.3.21"
+  kotlin("plugin.spring") version "2.4.0"
 }
 
 dependencies {
@@ -18,16 +18,13 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-webflux-test")
   testImplementation("com.h2database:h2")
   testImplementation("org.wiremock:wiremock-standalone:3.13.2")
-  testImplementation("io.swagger.parser.v3:swagger-parser:2.1.42") {
+  testImplementation("io.swagger.parser.v3:swagger-parser:2.1.44") {
     exclude(group = "io.swagger.core.v3")
   }
 }
 
 kotlin {
   jvmToolchain(25)
-  compilerOptions {
-    freeCompilerArgs.addAll("-Xannotation-default-target=param-property")
-  }
 }
 
 tasks {
