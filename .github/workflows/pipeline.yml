@@ -20,9 +20,6 @@ on:
 
 permissions:
   contents: read
-  packages: write
-  id-token: write
-  attestations: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -46,7 +43,7 @@ jobs:
     steps:
       - id: app_version
         name: Application version
-        uses: ministryofjustice/hmpps-github-shared-actions/.github/actions/build-test-and-deploy/create_app_version@122496e475fb4a2a5a808c9677f10de010737984 # v1.0.20
+        uses: ministryofjustice/hmpps-github-shared-actions/.github/actions/build-test-and-deploy/create_app_version@2848496f6e2f4144b17fd3f23519c851789e4b87 # v1.1.7
   gradle_verify:
     name: Validate the kotlin
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/gradle_verify.yml@v2 # WORKFLOW_VERSION
@@ -60,6 +57,11 @@ jobs:
   build:
     name: Build docker image
     if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/docker_build.yml@v2 # WORKFLOW_VERSION
     needs:
       - gradle_verify

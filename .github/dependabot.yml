@@ -10,13 +10,43 @@ updates:
   - package-ecosystem: docker
     directory: "/"
     schedule:
-      interval: daily
-    # Disable version updates, but leave security updates
-    open-pull-requests-limit: 0
+      interval: weekly
+      day: monday
+      time: "06:30"
+      timezone: Europe/London
+    cooldown:
+      default-days: 7
+    groups:
+      docker-dependencies:
+        patterns:
+          - "*"
 
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: daily
-    # Disable version updates, but leave security updates
-    open-pull-requests-limit: 0
+      interval: weekly
+      day: monday
+      time: "06:30"
+      timezone: Europe/London
+    cooldown:
+      default-days: 7
+      exclude:
+        - "ministryofjustice/*"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  - package-ecosystem: helm
+    directory: "/helm_deploy/hmpps-manage-custody-mailbox-register-api"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:30"
+      timezone: Europe/London
+    cooldown:
+      default-days: 7
+    groups:
+      helm-dependencies:
+        patterns:
+          - "*"
