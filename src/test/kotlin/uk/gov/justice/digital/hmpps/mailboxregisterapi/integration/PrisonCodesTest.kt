@@ -21,4 +21,13 @@ class PrisonCodesTest : IntegrationTestBase() {
         PrisonCode.entries.associate { it.name to it.prisonName },
       )
   }
+
+  @Test
+  fun `returns method not allowed if wrong http method`() {
+    webTestClient.put()
+      .uri(BASE_URI)
+      .headers(setAuthorisation(roles = listOf(ROLE_SYSTEM_ADMIN)))
+      .exchange()
+      .expectStatus().isEqualTo(405)
+  }
 }
